@@ -1,10 +1,10 @@
 {
-  "name": "vue-argon-dashboard-2-pro",
+  "name": "laramed-front",
   "version": "3.0.1",
   "private": true,
   "author": "Creative Tim",
   "license": "SEE LICENSE IN <https://www.creative-tim.com/license>",
-  "description": "VueJS version of Argon Dashboard 2 PRO by Creative Tim",
+  "description": "Laramed Frontend pipeline pharma",
   "homepage": "https://demos.creative-tim.com/vue-argon-dashboard-pro/",
   "bugs": {
     "url": "https://github.com/creativetimofficial/ct-vue-argon-dashboard-pro/issues"
@@ -17,7 +17,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "gh-pages -d dist"
+    "deploy": "node scripts/gh-pages-deploy.js"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.18.9",
@@ -63,6 +63,7 @@
     "gh-pages": "^4.0.0",
     "prettier": "2.7.1",
     "sass": "1.54.0",
-    "sass-loader": "13.0.2"
+    "sass-loader": "13.0.2",
+    "execa": "latest"
   }
 }

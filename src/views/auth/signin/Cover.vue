@@ -9,7 +9,9 @@
   <main class="main-content mt-0">
     <div
       class="page-header align-items-start min-vh-50 pt-7 pb-9"
-      style="background-image:url(' https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-cover.jpg');"
+      style="
+        background-image: url(' https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-cover.jpg');
+      "
     >
       <span class="mask bg-gradient-dark opacity-6"></span>
       <div class="container">
@@ -31,43 +33,42 @@
             <div class="card-header pb-0 text-start">
               <h3 class="font-weight-bolder">Welcome back</h3>
               <p class="mb-0">Enter your email and password to sign in</p>
-              
             </div>
-             
+
             <div class="card-body">
-                     
               <form role="form" class="text-start">
-                <span class=" text-danger text-xs mb-4" v-show="isErrorLogin">{{errMessage}}</span>
-                <br>    
+                <span class="text-danger text-xs mb-4" v-show="isErrorLogin">{{
+                  errMessage
+                }}</span>
+                <br />
                 <label>Email</label>
-                <input class="form-control"  
+                <input
+                  class="form-control"
                   id="email"
-                  type="email" 
+                  type="email"
                   placeholder="Email"
                   v-model="auth.email"
                   required
                 />
-               
-                 
+
                 <label>Password</label>
-                 
-                <input class="form-control"  
-                id="password"
-                type="password"
-                placeholder="Password" 
-                v-model="auth.password"
-                required
-              />
-              
-              
+
+                <input
+                  class="form-control"
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  v-model="auth.password"
+                  required
+                />
+
                 <div class="text-center">
-          
                   <button
-                      class="mt-4 mb-0 btn bg-gradient-success btn-sm me-2 w-100"
-                      type="button"
-                      name="button"
-                      @click="login"
-                    >
+                    class="mt-4 mb-0 btn bg-gradient-success btn-sm me-2 w-100"
+                    type="button"
+                    name="button"
+                    @click="login"
+                  >
                     Login
                   </button>
                 </div>
@@ -95,33 +96,29 @@
 import Navbar from "@/examples/PageLayout/Navbar.vue";
 import AppFooter from "@/examples/PageLayout/Footer.vue";
 const body = document.getElementsByTagName("body")[0];
-
+import router from "../../../router";
 import { mapMutations } from "vuex";
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 import axios from "axios";
 
 export default {
   name: "SigninCover",
-  data(){
-        return {
-          auth:{
-            email:'',
-            password:'',
-            remember: false
-          },
-          isErrorLogin: false,
-          errMessage:'',
-        }
-    },
+  data() {
+    return {
+      auth: {
+        email: "",
+        password: "",
+        remember: false,
+      },
+      isErrorLogin: false,
+      errMessage: "",
+    };
+  },
   components: {
     Navbar,
     AppFooter,
-     
-    
   },
-  watch: {
-    
-  },
+  watch: {},
   created() {
     this.$store.state.hideConfigButton = true;
     this.toggleDefaultLayout();
@@ -131,7 +128,6 @@ export default {
     this.$store.state.hideConfigButton = false;
     this.toggleDefaultLayout();
     body.classList.add("bg-gray-100");
-   
   },
   mounted() {
     this.$store.state.showSidenav = false;
@@ -140,29 +136,30 @@ export default {
   methods: {
     ...mapMutations(["toggleDefaultLayout"]),
     ...mapActions({
-            signIn:'auth/afterLogin',
-        }),
-    
-    async login(){
-        //alert("btn signup");
-        await axios.post('login',this.auth).then(response=>{
+      signIn: "auth/afterLogin",
+    }),
 
-            //alert(response.data.authorisation.token);
-            localStorage.setItem('token', response.data.authorisation.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user) );
-            //alert(localStorage.getItem('user'));
-            this.signIn( );
-           
-        }).catch(({response:{data}})=>{
-          this.errMessage = data.message;
-          this.isErrorLogin = true; 
-          
-            }).finally(()=>{
-            //alert("login finish ")
+    async login() {
+      //alert("btn signup");
+      await axios
+        .post("login", this.auth)
+        .then((response) => {
+          //alert(response.data.authorisation.token);
+          localStorage.setItem("token", response.data.authorisation.token);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+
+          //alert(localStorage.getItem('user'));
+          this.signIn();
+          router.push({ name: "Welcome" });
         })
+        .catch((data) => {
+          this.errMessage = data.message;
+          this.isErrorLogin = true;
+        })
+        .finally(() => {
+          //alert("login finish ")
+        });
     },
-    
   },
-  
 };
 </script>

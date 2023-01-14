@@ -14,21 +14,25 @@
           :class="getRoute() === 'dashboard' ? 'active' : ''"
         >
           <template #icon>
-            <i class="ni ni-shop text-primary text-sm opacity-10"></i>
+            <i class="ni ni-atom text-info text-sm opacity-10"></i>
           </template>
         </sidenav-collapse>
       </li>
       <li class="nav-item">
         <sidenav-collapse
-          nav-text="Users"
+          :nav-text="this.userRole === 'admin' ? 'Users' : 'Profile'"
           :collapse="false"
           url="#"
           :aria-controls="''"
-          collapse-ref="/users/users-list"
+          :collapse-ref="
+            this.userRole === 'admin'
+              ? '/users/users-list'
+              : '/users/account/settings'
+          "
           :class="getRoute() === 'users' ? 'active' : ''"
         >
           <template #icon>
-            <i class="ni ni-ui-04 text-info text-sm opacity-10"></i>
+            <i class="ni ni-circle-08 text-info text-sm opacity-10"></i>
           </template>
         </sidenav-collapse>
       </li>
@@ -48,14 +52,14 @@
           :class="getRoute() === 'ecommerce' ? 'active' : ''"
         >
           <template #icon>
-            <i class="ni ni-archive-2 text-success text-sm opacity-10"></i>
+            <i class="ni ni-shop text-info text-sm opacity-10"></i>
           </template>
           <template #list>
             <ul class="nav ms-4">
               <!-- nav links -->
               <sidenav-collapse-item
                 :collapse="getRoute() === 'products' ? 'true' : 'false'"
-                refer="mproductsExample"
+                refer="ecommExample"
                 mini-icon="P"
                 text="Products"
               >
@@ -79,6 +83,31 @@
                 mini-icon="O"
                 text="Orders"
               />
+
+              <!--<sidenav-collapse-item refer="ordersExample" mini-icon="O" text="Orders">
+                <template #nav-child-item>
+                  <sidenav-item :to="{ name: 'Order List' }" mini-icon="O" text="Order List" />
+                 <sidenav-item :to="{ name: 'Order Details' }" mini-icon="O" text="Order Details" />
+                </template>
+              </sidenav-collapse-item>-->
+            </ul>
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item" v-show="this.userRole === 'admin'">
+        <sidenav-collapse
+          :collapse="getRoute() === 'config' ? 'true' : 'false'"
+          collapse-ref="configExamples"
+          nav-text="Paramètres"
+          :class="getRoute() === 'config' ? 'active' : ''"
+        >
+          <template #icon>
+            <i class="ni ni-ui-04 text-info text-sm opacity-10"></i>
+          </template>
+          <template #list>
+            <ul class="nav ms-4">
+              <!-- nav links -->
+
               <sidenav-item
                 :to="{ name: 'Categories List' }"
                 mini-icon="O"
@@ -114,56 +143,143 @@
           </template>
         </sidenav-collapse>
       </li>
-      <!-- <li class="nav-item">
-        <sidenav-collapse collapse-ref="pagesExamples" nav-text="Pages" :class="getRoute() === 'pages' ? 'active' : ''">
+      <li class="nav-item">
+        <sidenav-collapse
+          collapse-ref="pagesExamples"
+          nav-text="Pages"
+          :class="getRoute() === 'pages' ? 'active' : ''"
+        >
           <template #icon>
             <i class="ni ni-ungroup text-warning text-sm opacity-10"></i>
           </template>
           <template #list>
             <ul class="nav ms-4">
-            
-              <sidenav-collapse-item refer="profileExample" mini-icon="P" text="Profile">
+              <sidenav-collapse-item
+                refer="profileExample"
+                mini-icon="P"
+                text="Profile"
+              >
                 <template #nav-child-item>
-                  <sidenav-item :to="{ name: 'Profile Overview' }" mini-icon="P" text="Profile Overview" />
-                 <sidenav-item :to="{ name: 'Teams' }" mini-icon="T" text="Teams" />
-                  <sidenav-item :to="{ name: 'All Projects' }" mini-icon="A" text="All Projects" />
+                  <sidenav-item
+                    :to="{ name: 'Profile Overview' }"
+                    mini-icon="P"
+                    text="Profile Overview"
+                  />
+                  <sidenav-item
+                    :to="{ name: 'Teams' }"
+                    mini-icon="T"
+                    text="Teams"
+                  />
+                  <sidenav-item
+                    :to="{ name: 'All Projects' }"
+                    mini-icon="A"
+                    text="All Projects"
+                  />
                 </template>
               </sidenav-collapse-item>
 
-              <sidenav-collapse-item refer="usersExample" mini-icon="U" text="Users">
+              <sidenav-collapse-item
+                refer="usersExample"
+                mini-icon="U"
+                text="Users"
+              >
                 <template #nav-child-item>
-                  <sidenav-item :to="{ name: 'Reports' }" mini-icon="R" text="Reports" />
-                  <sidenav-item :to="{ name: 'New User' }" mini-icon="N" text="New User" />
+                  <sidenav-item
+                    :to="{ name: 'Reports' }"
+                    mini-icon="R"
+                    text="Reports"
+                  />
+                  <sidenav-item
+                    :to="{ name: 'New User' }"
+                    mini-icon="N"
+                    text="New User"
+                  />
                 </template>
               </sidenav-collapse-item>
 
-              <sidenav-collapse-item refer="accountExample" mini-icon="A" text="Account">
+              <sidenav-collapse-item
+                refer="accountExample"
+                mini-icon="A"
+                text="Account"
+              >
                 <template #nav-child-item>
-                  <sidenav-item :to="{ name: 'Settings' }" mini-icon="S" text="Settings" />
-                  <sidenav-item :to="{ name: 'Billing' }" mini-icon="B" text="Billing" />
-                  <sidenav-item :to="{ name: 'Invoice' }" mini-icon="I" text="Invoice" />
-                  <sidenav-item :to="{ name: 'Security' }" mini-icon="S" text="Security" />
+                  <sidenav-item
+                    :to="{ name: 'Settings' }"
+                    mini-icon="S"
+                    text="Settings"
+                  />
+                  <sidenav-item
+                    :to="{ name: 'Billing' }"
+                    mini-icon="B"
+                    text="Billing"
+                  />
+                  <sidenav-item
+                    :to="{ name: 'Invoice' }"
+                    mini-icon="I"
+                    text="Invoice"
+                  />
+                  <sidenav-item
+                    :to="{ name: 'Security' }"
+                    mini-icon="S"
+                    text="Security"
+                  />
                 </template>
               </sidenav-collapse-item>
 
-              <sidenav-collapse-item refer="projectsExample" mini-icon="P" text="Projects">
+              <sidenav-collapse-item
+                refer="projectsExample"
+                mini-icon="P"
+                text="Projects"
+              >
                 <template #nav-child-item>
-                  <sidenav-item :to="{ name: 'General' }" mini-icon="G" text="General" />
-                  <sidenav-item :to="{ name: 'Timeline' }" mini-icon="T" text="Timeline" />
-                  <sidenav-item :to="{ name: 'New Project' }" mini-icon="N" text="New Project" />
+                  <sidenav-item
+                    :to="{ name: 'General' }"
+                    mini-icon="G"
+                    text="General"
+                  />
+                  <sidenav-item
+                    :to="{ name: 'Timeline' }"
+                    mini-icon="T"
+                    text="Timeline"
+                  />
+                  <sidenav-item
+                    :to="{ name: 'New Project' }"
+                    mini-icon="N"
+                    text="New Project"
+                  />
                 </template>
               </sidenav-collapse-item>
 
-              <sidenav-item :to="{ name: 'Pricing Page' }" mini-icon="P" text="Pricing Page" />
+              <sidenav-item
+                :to="{ name: 'Pricing Page' }"
+                mini-icon="P"
+                text="Pricing Page"
+              />
               <sidenav-item :to="{ name: 'RTL' }" mini-icon="R" text="RTL" />
-              <sidenav-item :to="{ name: 'Widgets' }" mini-icon="W" text="Widgets" />
-              <sidenav-item :to="{ name: 'Charts' }" mini-icon="C" text="Charts" />
-              <sidenav-item :to="{ name: 'Sweet Alerts' }" mini-icon="S" text="Sweet Alerts" />
-              <sidenav-item :to="{ name: 'Notifications' }" mini-icon="N" text="Notifications" />
+              <sidenav-item
+                :to="{ name: 'Widgets' }"
+                mini-icon="W"
+                text="Widgets"
+              />
+              <sidenav-item
+                :to="{ name: 'Charts' }"
+                mini-icon="C"
+                text="Charts"
+              />
+              <sidenav-item
+                :to="{ name: 'Sweet Alerts' }"
+                mini-icon="S"
+                text="Sweet Alerts"
+              />
+              <sidenav-item
+                :to="{ name: 'Notifications' }"
+                mini-icon="N"
+                text="Notifications"
+              />
             </ul>
           </template>
         </sidenav-collapse>
-      </li>-->
+      </li>
 
       <li class="nav-item">
         <sidenav-collapse
@@ -731,6 +847,8 @@ import SidenavCollapse from "./SidenavCollapse.vue";
 import SidenavCard from "./SidenavCard.vue";
 import SidenavCollapseItem from "./SidenavCollapseItem.vue";
 
+//import { mapGetters } from "vuex";
+
 export default {
   name: "SidenavList",
   components: {
@@ -739,6 +857,20 @@ export default {
     SidenavCard,
     SidenavCollapseItem,
   },
+  data() {
+    return {
+      userRole: "",
+    };
+  },
+  created() {
+    this.userRole = this.$store.state.auth.user.role;
+  },
+  computed: {
+    user() {
+      return this.$store.state.auth.user;
+    },
+  },
+
   methods: {
     getRoute() {
       const routeArr = this.$route.path.split("/");

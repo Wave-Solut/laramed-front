@@ -76,9 +76,13 @@ export default {
     Navbar,
     AppFooter,
   },
+  data() {
+    return {};
+  },
   mounted() {
     this.$store.state.showSidenav = false;
     this.$store.state.showNavbar = false;
+
     setNavPills();
   },
   async created() {
@@ -94,6 +98,9 @@ export default {
     categories() {
       return this.$store.state.categories;
     },
+    /*isAuthenticated() {
+      return this.$store.state.auth.isAuthenticated;
+    },*/
   },
   methods: {
     ...mapMutations(["toggleDefaultLayout"]),

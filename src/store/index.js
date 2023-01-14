@@ -43,6 +43,8 @@ export default createStore({
     country: [],
     enquiries: [],
     enquiry: [],
+    users: [],
+    user: [],
   },
   mutations: {
     toggleConfigurator(state) {
@@ -157,6 +159,17 @@ export default createStore({
     },
     SAVE_ENQUIRY(state, enquiry) {
       state.enquiry = enquiry;
+    },
+    SAVE_USERS(state, users) {
+      state.users = users;
+    },
+
+    SAVE_USER(state, user) {
+      state.user = user;
+    },
+    DELETE_USER(state, userId) {
+      let users = state.users.filter((p) => p.id != userId);
+      state.users = users;
     },
   },
   actions: {
@@ -379,8 +392,34 @@ export default createStore({
           throw new Error(`API ${error}`);
         });
     },
+    async loadUsers({ commit }) {
+      await axios
+        .get("/users")
+        .then((result) => {
+          commit("SAVE_USERS", result.data);
+        })
+        .catch((error) => {
+          throw new Error(`API ${error}`);
+        });
+    },
+    async loadUser({ commit }, iduser) {
+      // console.log(iduser);
+      return await axios
+        .get("/user/" + iduser)
+        .then((result) => {
+          commit("SAVE_USER", result.data.user);
+        })
+        .catch((error) => {
+          throw new Error(`API ${error}`);
+        });
+    },
+    async deleteUser({ commit }, user) {
+      commit("DELETE_USER", user.id);
+    },
   },
   getters: {
+    getUsers: (state) => state.users,
+    getUser: (state) => state.user,
     getProducts: (state) => state.products,
     getProduct: (state) => state.product,
     getCategories: (state) => state.categories,

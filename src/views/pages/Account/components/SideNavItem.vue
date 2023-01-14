@@ -12,8 +12,8 @@
       </div>
       <div class="col-sm-auto col-8 my-auto">
         <div class="h-100">
-          <h5 class="mb-1 font-weight-bolder">Mark Johnson</h5>
-          <p class="mb-0 font-weight-bold text-sm">CEO / Co-Founder</p>
+          <h5 class="mb-1 font-weight-bolder">{{ user.full_name }}</h5>
+          <p class="mb-0 font-weight-bold text-sm">{{ user.role }}</p>
         </div>
       </div>
       <div class="col-sm-auto ms-sm-auto mt-sm-0 mt-3 d-flex">
@@ -35,107 +35,97 @@
     <div class="card-body pt-0">
       <div class="row">
         <div class="col-6">
-          <label class="form-label">First Name</label>
-          <argon-input id="firstname" type="text" placeholder="Alec" />
+          <label class="form-label">Full Name</label>
+          <argon-input
+            id="firstname"
+            type="text"
+            :value="user.full_name"
+            placeholder="Alec"
+          />
         </div>
-        <div class="col-6">
-          <label class="form-label">Last Name</label>
-          <argon-input id="lastname" type="text" placeholder="Thompson" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-4 col-6">
-          <label class="form-label mt-2">I'm</label>
-          <select
-            id="choices-gender"
-            class="form-control"
-            name="choices-gender"
-          >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-        </div>
-        <div class="col-sm-8">
-          <div class="row">
-            <div class="col-sm-5 col-5">
-              <label class="form-label mt-2">Birth Date</label>
-              <select
-                id="choices-month"
-                class="form-control"
-                name="choices-month"
-              ></select>
-            </div>
-            <div class="col-sm-4 col-3">
-              <label class="form-label mt-2">&nbsp;</label>
-              <select
-                id="choices-day"
-                class="form-control"
-                name="choices-day"
-              ></select>
-            </div>
-            <div class="col-sm-3 col-4">
-              <label class="form-label mt-2">&nbsp;</label>
-              <select
-                id="choices-year"
-                class="form-control"
-                name="choices-year"
-              ></select>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
+
+        <div class="col-sm-6 col-6">
           <label class="form-label mt-2">Email</label>
           <argon-input
             id="email"
             type="email"
-            placeholder="example@email.com"
-          />
-        </div>
-        <div class="col-6">
-          <label class="form-label mt-2">Confirmation Email</label>
-          <argon-input
-            id="confirm-email"
-            type="email"
+            :value="user.email"
             placeholder="example@email.com"
           />
         </div>
       </div>
       <div class="row">
-        <div class="col-6">
-          <label class="form-label mt-2">Your location</label>
-          <argon-input id="location" type="text" placeholder="Sydney, A" />
+        <div class="col-sm-6 col-6">
+          <label class="form-label mt-2">Account Type</label>
+          <argon-input
+            id="role"
+            type="text"
+            :value="user.role"
+            placeholder="role"
+            disabled
+          />
         </div>
+        <div class="col-sm-6 col-6">
+          <label class="form-label mt-2">Registry Date</label>
+          <argon-input
+            id="confirm-registry-date"
+            type="text"
+            placeholder="01/02/2023"
+            aria-disabled="true"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <label class="form-label mt-2">Address</label>
+          <argon-input
+            id="location"
+            type="text"
+            :value="user.address"
+            placeholder="Sydney, A"
+          />
+        </div>
+
         <div class="col-6">
           <label class="form-label mt-2">Phone Number</label>
-          <argon-input id="phone" type="text" placeholder="+40 745 765 439" />
+          <argon-input
+            id="phone"
+            type="text"
+            :value="user.phone"
+            placeholder="+40 745 765 439"
+          />
         </div>
       </div>
+
+      <div class="col-12">
+        <label class="form-label">Orgnization Description</label>
+        <textarea
+          class="form-control"
+          type="text"
+          placeholder="About your Organization "
+        />
+      </div>
       <div class="row">
-        <div class="col-md-6 align-self-center">
-          <label class="form-label mt-2">Language</label>
-          <select
-            id="choices-language"
-            class="form-control"
-            name="choices-language"
-          >
-            <option value="English">English</option>
-            <option value="French">French</option>
-            <option value="Spanish">Spanish</option>
-          </select>
-        </div>
         <div class="col-md-6">
-          <label class="form-label mt-2">Skills</label>
+          <label class="form-label mt-2">Countries</label>
           <input
             id="choices-skills"
             class="form-control"
             type="text"
-            value="vuejs, angular, react"
+            value="Tunisia, France, Czech Republic"
             placeholder="Enter something"
             onfocus="focused(this)"
             onfocusout="defocused(this)"
           />
+        </div>
+        <div class="col-md-6">
+          <argon-button
+            class="float-end mt-6 mb-0"
+            color="light"
+            variant="gradient"
+            size="sm"
+            >Update Basic Informations</argon-button
+          >
         </div>
       </div>
     </div>
@@ -183,14 +173,14 @@
       </ul>
       <argon-button
         class="float-end mt-6 mb-0"
-        color="dark"
+        color="light"
         variant="gradient"
         size="sm"
         >Update password</argon-button
       >
     </div>
   </div>
-  <div id="2fa" class="card mt-4">
+  <!--<div id="2fa" class="card mt-4">
     <div class="card-header d-flex">
       <h5 class="mb-0">Two-factor authentication</h5>
       <argon-badge color="success" class="ms-auto">Enabled</argon-badge>
@@ -239,8 +229,8 @@
         >
       </div>
     </div>
-  </div>
-  <div id="accounts" class="card mt-4">
+  </div>-->
+  <!--<div id="accounts" class="card mt-4">
     <div class="card-header">
       <h5>Accounts</h5>
       <p class="text-sm">
@@ -342,8 +332,8 @@
         </div>
       </div>
     </div>
-  </div>
-  <div id="notifications" class="card mt-4">
+  </div>-->
+  <!--<div id="notifications" class="card mt-4">
     <div class="card-header">
       <h5>Notifications</h5>
       <p class="text-sm">
@@ -505,8 +495,8 @@
         </table>
       </div>
     </div>
-  </div>
-  <div id="sessions" class="card mt-4">
+  </div>-->
+  <!--<div id="sessions" class="card mt-4">
     <div class="card-header pb-3">
       <h5>Sessions</h5>
       <p class="text-sm">
@@ -568,7 +558,7 @@
         </a>
       </div>
     </div>
-  </div>
+  </div>-->
   <div id="delete" class="card mt-4">
     <div class="card-header">
       <h5>Delete Account</h5>
@@ -612,7 +602,7 @@
 import * as Choices from "choices.js";
 import ArgonButton from "@/components/ArgonButton.vue";
 import ArgonSwitch from "@/components/ArgonSwitch.vue";
-import ArgonBadge from "@/components/ArgonBadge.vue";
+//import ArgonBadge from "@/components/ArgonBadge.vue";
 import ArgonAvatar from "@/components/ArgonAvatar.vue";
 import ArgonInput from "@/components/ArgonInput.vue";
 import img from "../../../../assets/img/team-3.jpg";
@@ -626,7 +616,7 @@ export default {
   components: {
     ArgonButton,
     ArgonSwitch,
-    ArgonBadge,
+    // ArgonBadge,
     ArgonAvatar,
     ArgonInput,
   },
@@ -639,21 +629,29 @@ export default {
       img4,
     };
   },
+  async created() {
+    //await this.$store.dispatch("loadUser", this.$store.state.auth.user.id);
+  },
+  computed: {
+    user() {
+      return this.$store.state.auth.user;
+    },
+  },
   mounted() {
     if (document.getElementById("choices-gender")) {
       var gender = document.getElementById("choices-gender");
-      new Choices(gender,{ allowHTML: true});
+      new Choices(gender, { allowHTML: true });
     }
 
     if (document.getElementById("choices-language")) {
       var language = document.getElementById("choices-language");
-      new Choices(language,{ allowHTML: true});
+      new Choices(language, { allowHTML: true });
     }
 
     if (document.getElementById("choices-month")) {
       var month = document.getElementById("choices-month");
       setTimeout(function () {
-        new Choices(month,{ allowHTML: true});
+        new Choices(month, { allowHTML: true });
       }, 1);
 
       // eslint-disable-next-line no-unused-vars
@@ -687,7 +685,7 @@ export default {
     if (document.getElementById("choices-day")) {
       var day = document.getElementById("choices-day");
       setTimeout(function () {
-        new Choices(day,{ allowHTML: true});
+        new Choices(day, { allowHTML: true });
       }, 1);
 
       for (let y = 1; y <= 31; y++) {
@@ -706,7 +704,7 @@ export default {
     if (document.getElementById("choices-year")) {
       var year = document.getElementById("choices-year");
       setTimeout(function () {
-        new Choices(year,{ allowHTML: true});
+        new Choices(year, { allowHTML: true });
       }, 1);
 
       for (let y = 1900; y <= 2020; y++) {

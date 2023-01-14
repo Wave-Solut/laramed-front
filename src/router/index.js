@@ -56,6 +56,7 @@ import Referral from "../views/ecommerce/Referral.vue";
 import Reports from "../views/pages/Users/Reports.vue";
 import NewUser from "../views/pages/Users/NewUser.vue";
 import Settings from "../views/pages/Account/Settings.vue";
+import ProfileSetting from "../views/pages/Account/ProfileSetting.vue";
 import Billing from "../views/pages/Account/Billing.vue";
 import Invoice from "../views/pages/Account/Invoice.vue";
 import Security from "../views/pages/Account/Security.vue";
@@ -238,31 +239,31 @@ const routes = [
     props: true,
   },
   {
-    path: "/ecommerce/categories/edit-category/:id",
+    path: "/config/categories/edit-category/:id",
     name: "Edit Category",
     component: EditCategory,
     props: true,
   },
   {
-    path: "/ecommerce/atcs/edit-atc/:id",
+    path: "/config/atcs/edit-atc/:id",
     name: "Edit Atc",
     component: EditAtc,
     props: true,
   },
   {
-    path: "/ecommerce/forms/edit-form/:id",
+    path: "/config/forms/edit-form/:id",
     name: "Edit Form",
     component: EditForm,
     props: true,
   },
   {
-    path: "/ecommerce/substances/edit-substance/:id",
+    path: "/config/substances/edit-substance/:id",
     name: "Edit Substance",
     component: EditSubstance,
     props: true,
   },
   {
-    path: "/ecommerce/countries/edit-country/:id",
+    path: "/config/countries/edit-country/:id",
     name: "Edit Country",
     component: EditCountry,
     props: true,
@@ -273,27 +274,27 @@ const routes = [
     component: AddProduct,
   },
   {
-    path: "/ecommerce/categories/add-category/",
+    path: "/config/categories/add-category/",
     name: "Add Category",
     component: AddCategory,
   },
   {
-    path: "/ecommerce/atcs/add-atc/",
+    path: "/config/atcs/add-atc/",
     name: "Add Atc",
     component: AddAtc,
   },
   {
-    path: "/ecommerce/forms/add-form/",
+    path: "/config/forms/add-form/",
     name: "Add Form",
     component: AddForm,
   },
   {
-    path: "/ecommerce/substances/add-substance/",
+    path: "/config/substances/add-substance/",
     name: "Add Substance",
     component: AddSubstance,
   },
   {
-    path: "/ecommerce/countries/add-country/",
+    path: "/config/countries/add-country/",
     name: "Add Country",
     component: AddCountry,
   },
@@ -314,32 +315,32 @@ const routes = [
     component: ProductsList,
   },
   {
-    path: "/ecommerce/categories/categories-list",
+    path: "/config/categories/categories-list",
     name: "Categories List",
     component: CategoriesList,
   },
   {
-    path: "/ecommerce/users/users-list",
+    path: "/users/users-list",
     name: "Users List",
     component: UsersList,
   },
   {
-    path: "/ecommerce/atcs/atcs-list",
+    path: "/config/atcs/atcs-list",
     name: "Atcs List",
     component: AtcsList,
   },
   {
-    path: "/ecommerce/forms/forms-list",
+    path: "/config/forms/forms-list",
     name: "Forms List",
     component: FormsList,
   },
   {
-    path: "/ecommerce/substances/substances-list",
+    path: "/config/substances/substances-list",
     name: "Substances List",
     component: SubstancesList,
   },
   {
-    path: "/ecommerce/countries/countries-list",
+    path: "/config/countries/countries-list",
     name: "Countries List",
     component: CountriesList,
   },
@@ -375,9 +376,15 @@ const routes = [
     component: NewUser,
   },
   {
-    path: "/pages/account/settings",
+    path: "/users/account/settings",
     name: "Settings",
     component: Settings,
+  },
+  {
+    path: "/users/account/profile-setting/:id",
+    name: "Profile Setting",
+    component: ProfileSetting,
+    props: true,
   },
   {
     path: "/pages/account/billing",
@@ -482,7 +489,8 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  //history: createWebHistory(),
+  history: createWebHistory("/laramed-front/"),
   routes,
   linkActiveClass: "active",
 });

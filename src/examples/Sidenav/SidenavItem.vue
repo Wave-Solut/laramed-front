@@ -1,5 +1,5 @@
 <template>
-  <li class="nav-item " >
+  <li class="nav-item">
     <router-link class="nav-link" :to="to">
       <span class="sidenav-mini-icon"> {{ miniIcon }} </span>
       <span class="sidenav-normal"> {{ text }} </span>

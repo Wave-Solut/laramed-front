@@ -31,7 +31,7 @@
           <span class="text-sm">Change Password</span>
         </a>
       </li>
-      <li class="nav-item pt-2">
+      <!-- <li class="nav-item pt-2">
         <a
           class="nav-link text-body d-flex align-items-center"
           data-scroll
@@ -40,8 +40,8 @@
           <i class="ni ni-ui-04 me-2 text-dark opacity-6"></i>
           <span class="text-sm">2FA</span>
         </a>
-      </li>
-      <li class="nav-item pt-2">
+      </li>-->
+      <!-- <li class="nav-item pt-2">
         <a
           class="nav-link text-body d-flex align-items-center"
           data-scroll
@@ -50,8 +50,8 @@
           <i class="ni ni-badge me-2 text-dark opacity-6"></i>
           <span class="text-sm">Accounts</span>
         </a>
-      </li>
-      <li class="nav-item pt-2">
+      </li>-->
+      <!--<li class="nav-item pt-2">
         <a
           class="nav-link text-body d-flex align-items-center"
           data-scroll
@@ -60,8 +60,8 @@
           <i class="ni ni-bell-55 me-2 text-dark opacity-6"></i>
           <span class="text-sm">Notifications</span>
         </a>
-      </li>
-      <li class="nav-item pt-2">
+      </li>-->
+      <!--<li class="nav-item pt-2">
         <a
           class="nav-link text-body d-flex align-items-center"
           data-scroll
@@ -70,7 +70,7 @@
           <i class="ni ni-watch-time me-2 text-dark opacity-6"></i>
           <span class="text-sm">Sessions</span>
         </a>
-      </li>
+      </li>-->
       <li class="nav-item pt-2">
         <a
           class="nav-link text-body d-flex align-items-center"

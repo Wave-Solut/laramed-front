@@ -43,7 +43,7 @@
           </li>
           <li class="mx-2 nav-item dropdown dropdown-hover">
             <a
-              href="marketplace"
+              href="/marketplace"
               role="button"
               class="cursor-pointer nav-link ps-2 d-flex justify-content-between align-items-center"
               :class="[darkModes]"
@@ -663,6 +663,7 @@
               class="mb-0 btn btn-sm me-1"
               :class="btnBackground ? btnBackground : 'bg-white text-dark'"
               onclick="smoothToPricing('pricing-soft-ui')"
+              v-show="!this.isAuth"
               >Login</a
             >
             <a
@@ -670,7 +671,16 @@
               class="mb-0 btn btn-sm me-1"
               :class="btnBackground ? btnBackground : 'bg-white text-dark'"
               onclick="smoothToPricing('pricing-soft-ui')"
+              v-show="!this.isAuth"
               >Register</a
+            >
+            <a
+              href="/dashboard/welcome"
+              class="mb-0 btn btn-sm me-1"
+              :class="btnBackground ? btnBackground : 'bg-white text-dark'"
+              onclick="smoothToPricing('pricing-soft-ui')"
+              v-show="isAuth"
+              >Dashboard</a
             >
           </li>
         </ul>
@@ -705,6 +715,7 @@ export default {
     return {
       downArrWhite,
       downArrBlack,
+      isAuth: false,
     };
   },
   computed: {
@@ -713,6 +724,9 @@ export default {
         "text-dark": this.darkMode,
       };
     },
+  },
+  created() {
+    this.isAuth = this.$store.state.auth.authenticated;
   },
 };
 </script>

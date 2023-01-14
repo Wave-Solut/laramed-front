@@ -19,9 +19,7 @@
         <div class="row justify-content-center">
           <div class="col-lg-5 text-center mx-auto">
             <h1 class="text-white mb-2 mt-5">Welcome!</h1>
-            <p class="text-lead text-white">
-              Create new account
-            </p>
+            <p class="text-lead text-white">Create new account</p>
           </div>
         </div>
       </div>
@@ -33,7 +31,7 @@
             <div class="card-header text-center pt-4">
               <h5>Register</h5>
             </div>
-           <!-- <div class="row px-xl-5 px-sm-4 px-3">
+            <!-- <div class="row px-xl-5 px-sm-4 px-3">
               <div class="col-3 ms-auto px-1">
                 <a class="btn btn-outline-light w-100" href="javascript:;">
                   <svg
@@ -143,55 +141,61 @@
             </div>-->
             <div class="card-body">
               <form role="form">
-                <span class="error_message text-danger text-xs mb-4" v-show="isErrorLogin">{{errMessage}}</span>
-                <br>
+                <span
+                  class="error_message text-danger text-xs mb-4"
+                  v-show="isErrorLogin"
+                  >{{ errMessage }}</span
+                >
+                <br />
                 <label>Full Name / Orgnization Name</label>
-                <input class="form-control"  
-                id="full_name"
-                type="text" 
-                placeholder="Full Name / Orgnization Name"
-                v-model="user.full_name"
-                v-validate="required"
-              />
+                <input
+                  class="form-control"
+                  id="full_name"
+                  type="text"
+                  placeholder="Full Name / Orgnization Name"
+                  v-model="user.full_name"
+                  v-validate="required"
+                />
 
-              <label>Register As</label>
-              <select
-                id="choices-role-edit"
-                class="form-control"
-                name="choices-role"
-                v-model="user.role"
-                 
-              >
-                <option  :value='customer' class="text-xs" selected> customer  </option>
-                <option :value='vendor' class="text-xs"> vendor </option>
-                
-             
-              </select>
+                <label>Register As</label>
+                <select
+                  id="choices-role-edit"
+                  class="form-control"
+                  name="choices-role"
+                  v-model="user.role"
+                >
+                  <option :value="customer" class="text-xs" selected>
+                    customer
+                  </option>
+                  <option :value="vendor" class="text-xs">vendor</option>
+                </select>
 
-              <label>Email</label>
-                <input class="form-control"  
-                id="email"
-                type="email" 
-                placeholder="Email"
-                v-model="user.email"
-                v-validate="required"
-              />
-              <label>Password</label>
-                <input class="form-control"  
-                id="password"
-                type="password"
-                placeholder="Password" 
-                v-model="user.password"
-                v-validate="required"
-              />
-              <label>Confirm Password</label>
-              <input class="form-control"  
-              id="confirm_password"
-              type="password"
-              placeholder="Confirm password" 
-              v-model="user.confirm_password"
-              
-            />
+                <label>Email</label>
+                <input
+                  class="form-control"
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  v-model="user.email"
+                  v-validate="required"
+                />
+                <label>Password</label>
+                <input
+                  class="form-control"
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  v-model="user.password"
+                  v-validate="required"
+                />
+                <label>Confirm Password</label>
+                <input
+                  class="form-control"
+                  id="confirm_password"
+                  type="password"
+                  placeholder="Confirm password"
+                  v-model="user.confirm_password"
+                />
                 <argon-checkbox checked>
                   <label class="form-check-label" for="flexCheckDefault">
                     I agree the
@@ -202,11 +206,11 @@
                 </argon-checkbox>
                 <div class="text-center">
                   <button
-                      class="mb-0 btn bg-gradient-success btn-sm me-2 w-100"
-                      type="button"
-                      name="button"
-                      @click="register"
-                    >
+                    class="mb-0 btn bg-gradient-success btn-sm me-2 w-100"
+                    type="button"
+                    name="button"
+                    @click="register"
+                  >
                     Register
                   </button>
                 </div>
@@ -237,7 +241,7 @@ import Choices from "choices.js";
 const body = document.getElementsByTagName("body")[0];
 import axios from "axios";
 
-import { mapMutations,mapActions } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 
 export default {
   name: "SigninCover",
@@ -245,22 +249,21 @@ export default {
     Navbar,
     AppFooter,
     ArgonCheckbox,
-    
   },
-  data(){
-        return {
-          user:{
-            full_name:'',
-            email:'',
-            password:'',
-            confirm_password:'',
-            remember: false,
-            role:'customer',
-          },
-          token:'',
-          isErrorLogin: false,
-          errMessage:'',
-        }
+  data() {
+    return {
+      user: {
+        full_name: "",
+        email: "",
+        password: "",
+        confirm_password: "",
+        remember: false,
+        role: "customer",
+      },
+      token: "",
+      isErrorLogin: false,
+      errMessage: "",
+    };
   },
   mounted() {
     this.getChoices("choices-role-edit");
@@ -280,37 +283,37 @@ export default {
   methods: {
     ...mapMutations(["toggleDefaultLayout"]),
     ...mapActions({
-            signIn:'auth/afterLogin'
-        }),
- 
-        async register(){
-            //alert("btn signup");
-            await axios.post('register',this.user).then(response=>{
+      signIn: "auth/afterLogin",
+    }),
 
-                //alert(response.data.authorisation.token);
-                localStorage.setItem('token', response.data.authorisation.token);
-                localStorage.setItem('user', JSON.stringify(response.data.user) );
-                this.signIn();
-              
-            }).catch(({response:{data}})=>{
-              //alert(data.message)
-              this.errMessage = data.message;
-              this.isErrorLogin = true; 
-
-                }).finally(()=>{
-                //alert("login finish ")
-            })
-        },
-        getChoices(id) {
-            if (document.getElementById(id)) {
-              var element = document.getElementById(id);
-              return new Choices(element, {
-                searchEnabled: false,
-                allowHTML: true,                
-              });
-            }
+    async register() {
+      //alert("btn signup");
+      await axios
+        .post("register", this.user)
+        .then((response) => {
+          //alert(response.data.authorisation.token);
+          localStorage.setItem("token", response.data.authorisation.token);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          this.signIn();
+        })
+        .catch(({ data }) => {
+          //alert(data.message)
+          this.errMessage = data.message;
+          this.isErrorLogin = true;
+        })
+        .finally(() => {
+          //alert("login finish ")
+        });
+    },
+    getChoices(id) {
+      if (document.getElementById(id)) {
+        var element = document.getElementById(id);
+        return new Choices(element, {
+          searchEnabled: false,
+          allowHTML: true,
+        });
+      }
     },
   },
-  
 };
 </script>

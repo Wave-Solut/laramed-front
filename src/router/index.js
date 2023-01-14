@@ -490,6 +490,7 @@ const routes = [
 
 const router = createRouter({
   //history: createWebHistory(),
+
   history: createWebHistory("/laramed-front/"),
   routes,
   linkActiveClass: "active",

@@ -76,7 +76,7 @@
                 v-for="(pform, index) in productForms"
                 :key="index"
               >
-                <div class="col-6">
+                <div class="col-12">
                   <label :for="`data[${index}]form`">Form </label>
                   <select
                     v-bind:id="`choices-form-edit-${index}`"
@@ -95,7 +95,7 @@
                     </option>
                   </select>
                 </div>
-                <div class="col-4">
+                <div class="col-6">
                   <label :for="`data[${index}]volume`" class="">Volume</label>
                   <input
                     class="form-control"
@@ -104,27 +104,42 @@
                     v-model="pform.volume"
                   />
                 </div>
+                <div class="col-6">
+                  <label :for="`data[${index}]unit`" class="">Unit</label>
+
+                  <select
+                    v-bind:id="`choices-unit-edit-${index}`"
+                    class="form-control"
+                    :name="`data[${index}]unit`"
+                    v-model="pform.unit"
+                  >
+                    <option class="text-xs">ml</option>
+                    <option>mg</option>
+                    <option>L</option>
+                    <option>g</option>
+                  </select>
+                </div>
 
                 <div class="col-2 mt-2 d-flex justify-content-center p-4">
-                  <button
+                  <!--<button
                     class="mb-0 btn btn-outline-dark btn-xs"
                     type="button"
                     name="button"
                     v-on:click="productForms.splice(index, 1)"
                   >
                     &times;
-                  </button>
+                  </button>-->
                 </div>
               </div>
               <div class="col-3 mt-2">
-                <button
+                <!--<button
                   class="mb-0 btn bg-gradient-success btn-xs me-2"
                   type="button"
                   name="button"
                   v-on:click="productForms.push({})"
                 >
                   Add
-                </button>
+                </button>-->
               </div>
             </div>
             <div class="row">
@@ -285,6 +300,7 @@ export default {
           product_id: "",
           form_id: "",
           volume: "",
+          unit: "",
         },
       ],
       productSubstances: {
@@ -319,6 +335,7 @@ export default {
     this.getChoices("choices-form-edit-2");
     this.getChoices("choices-form-edit-3");
     this.getChoices("choices-form-edit-4");
+    this.getChoices("choices-unit-edit-0");
     //this.getChoices("choices-substance-edit");
     this.getChoices("choices-currency-edit");
 

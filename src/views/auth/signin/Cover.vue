@@ -37,9 +37,17 @@
 
             <div class="card-body">
               <form role="form" class="text-start">
-                <span class="text-danger text-xs mb-4" v-show="isErrorLogin">{{
-                  errMessage
-                }}</span>
+                <div
+                  class="alert alert-danger text-center"
+                  v-show="isErrorLogin"
+                  role="alert"
+                >
+                  <span class="alert-text text-xs text-white"
+                    ><strong>Login Failed ! </strong> Incorrect email or
+                    password
+                  </span>
+                </div>
+
                 <br />
                 <label>Email</label>
                 <input
@@ -152,8 +160,8 @@ export default {
           this.signIn();
           router.push({ name: "Welcome" });
         })
-        .catch((data) => {
-          this.errMessage = data.message;
+        .catch(({ response }) => {
+          this.errMessage = response.data.message;
           this.isErrorLogin = true;
         })
         .finally(() => {

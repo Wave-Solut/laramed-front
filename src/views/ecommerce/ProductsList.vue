@@ -48,11 +48,23 @@
                         </div>
                         <div class="modal-body">
                           <p>You can browse your computer for a file.</p>
+
                           <input
-                            type="text"
+                            @change="uploadExcel"
+                            id="excel"
+                            type="file"
+                            class="custom-file-input"
+                          />
+                          <label class="custom-file-label" for="excel">{{
+                            fileName
+                          }}</label>
+
+                          <input
+                            type="file"
                             placeholder="Browse file..."
                             class="mb-3 form-control"
                           />
+
                           <div class="form-check">
                             <input
                               id="importCheck"
@@ -79,6 +91,7 @@
                           <button
                             type="button"
                             class="btn bg-gradient-success btn-sm"
+                            @click="importExcel"
                           >
                             Upload
                           </button>
@@ -244,12 +257,16 @@
 
 <script>
 import { DataTable } from "simple-datatables";
+import axios from "axios";
 
 export default {
   name: "ProductsList",
   props: {},
   data() {
-    return {};
+    return {
+      fileName: "",
+      attachment: "",
+    };
   },
   mounted() {
     if (document.getElementById("products-list")) {
@@ -276,6 +293,7 @@ export default {
         });
       });
     }
+
     // setTooltip(this.$store.state.bootstrap);
   },
 
@@ -283,6 +301,65 @@ export default {
     deleteProduct(productId) {
       this.$store.dispatch("deleteProduct", productId);
     },
+  },
+
+  importExcel() {
+    this.$Progress.start();
+    this.import
+      .post("/api/barang/import")
+      .then((data) => {
+        console.log(data.data);
+        this.$Progress.finish();
+      })
+      .catch(() => {
+        this.$Progress.fail();
+      });
+  },
+  uploadExcel(e) {
+    let file = e.target.files[0];
+    let reader = new FileReader();
+
+    // console.log(file);
+    if (
+      file["type"] ==
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      this.fileName = file["name"];
+      //this.import.excel = file;
+      reader.onloadend = (file) => {
+        console.log(file);
+        this.import.excel = reader.result;
+      };
+      reader.readAsDataURL(file);
+      //this.import.excel = file;
+      console.log(this.import.excel);
+    } else {
+      /* Swal.fire({
+        type: "warning",
+        title: "Format file salah",
+      });*/
+    }
+  },
+  submitFile() {
+    alert("clicked");
+    this.formData = new FormData();
+    this.formData.append("name", this.fileName);
+    this.formData.append("file", this.$refs.file.files[0]);
+
+    axios
+      .post("productsfile", this.formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        // handle success response
+        console.log(response);
+      })
+      .catch((error) => {
+        // handle failed response
+        console.log(error);
+      });
   },
   async created() {
     await this.$store.dispatch("loadProducts");

@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 import FrontWelcome from "../views/auth/signin/Home.vue";
 import MarketPlace from "../views/auth/signin/Marketplace.vue";
 import Welcome from "../views/dashboard/Welcome.vue";
@@ -94,312 +95,492 @@ const routes = [
     path: "/marketplace",
     name: "Marketplace",
     component: MarketPlace,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/dashboard/welcome",
     name: "Welcome",
     component: Welcome,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/dashboards/dashboard-default",
     name: "Default",
     component: Default,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/dashboards/landing",
     name: "Landing",
     component: Landing,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/dashboards/automotive",
     name: "Automotive",
     component: Automotive,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/dashboards/smart-home",
     name: "Smart Home",
     component: SmartHome,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/dashboards/vr/vr-default",
     name: "VR Default",
     component: VRDefault,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/dashboards/vr/vr-info",
     name: "VR Info",
     component: VRInfo,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/dashboards/crm",
     name: "CRM",
     component: CRM,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/profile/overview",
     name: "Profile Overview",
     component: Overview,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/profile/teams",
     name: "Teams",
     component: Teams,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/profile/projects",
     name: "All Projects",
     component: Projects,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/projects/general",
     name: "General",
     component: General,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/projects/timeline",
     name: "Timeline",
     component: Timeline,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/projects/new-project",
     name: "New Project",
     component: NewProject,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/pricing-page",
     name: "Pricing Page",
     component: Pricing,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/checkout/:id",
     name: "Checkout Page",
     component: Checkout,
     props: true,
+    meta: {
+      isAuth: true,
+    },
   },
 
   {
     path: "/pages/rtl-page",
     name: "RTL",
     component: RTL,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/charts",
     name: "Charts",
     component: Charts,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/widgets",
     name: "Widgets",
     component: Widgets,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/sweet-alerts",
     name: "Sweet Alerts",
     component: SweetAlerts,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/notifications",
     name: "Notifications",
     component: Notifications,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/applications/kanban",
     name: "Kanban",
     component: Kanban,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/applications/wizard",
     name: "Wizard",
     component: Wizard,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/applications/data-tables",
     name: "Data Tables",
     component: DataTables,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/applications/analytics",
     name: "Analytics",
     component: Analytics,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/ecommerce/overview",
     name: "Overview",
     component: EcommerceOverview,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/ecommerce/products/new-product",
     name: "New Product",
     component: NewProduct,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/ecommerce/products/edit-product/:id",
     name: "Edit Product",
     component: EditProduct,
     props: true,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/categories/edit-category/:id",
     name: "Edit Category",
     component: EditCategory,
     props: true,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/atcs/edit-atc/:id",
     name: "Edit Atc",
     component: EditAtc,
     props: true,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/forms/edit-form/:id",
     name: "Edit Form",
     component: EditForm,
     props: true,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/substances/edit-substance/:id",
     name: "Edit Substance",
     component: EditSubstance,
     props: true,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/countries/edit-country/:id",
     name: "Edit Country",
     component: EditCountry,
     props: true,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/ecommerce/products/add-product/",
     name: "Add Product",
     component: AddProduct,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/categories/add-category/",
     name: "Add Category",
     component: AddCategory,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/atcs/add-atc/",
     name: "Add Atc",
     component: AddAtc,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/forms/add-form/",
     name: "Add Form",
     component: AddForm,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/substances/add-substance/",
     name: "Add Substance",
     component: AddSubstance,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/countries/add-country/",
     name: "Add Country",
     component: AddCountry,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/ecommerce/products/product-page/",
     name: "Product Page",
     component: ProductPage,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/ecommerce/products/product-info/:id",
     name: "Product Info",
     component: ProductInfo,
     props: true,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/ecommerce/products/products-list",
     name: "Products List",
     component: ProductsList,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/categories/categories-list",
     name: "Categories List",
     component: CategoriesList,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/users/users-list",
     name: "Users List",
     component: UsersList,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/atcs/atcs-list",
     name: "Atcs List",
     component: AtcsList,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/forms/forms-list",
     name: "Forms List",
     component: FormsList,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/substances/substances-list",
     name: "Substances List",
     component: SubstancesList,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/config/countries/countries-list",
     name: "Countries List",
     component: CountriesList,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/ecommerce/orders/order-details",
     name: "Order Details",
     component: OrderDetails,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/ecommerce/orders/order-list",
     name: "Order List",
     component: OrderList,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/ecommerce/orders/details/:id",
     name: "Enquiry Details",
     component: EnquiryDetails,
     props: true,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/ecommerce/referral",
     name: "Referral",
     component: Referral,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/users/reports",
     name: "Reports",
     component: Reports,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/users/new-user",
     name: "New User",
     component: NewUser,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/users/account/settings",
     name: "Settings",
     component: Settings,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/users/account/profile-setting/:id",
     name: "Profile Setting",
     component: ProfileSetting,
     props: true,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/account/billing",
     name: "Billing",
     component: Billing,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/account/invoice",
     name: "Invoice",
     component: Invoice,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/pages/account/Security",
     name: "Security",
     component: Security,
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/authentication/signin/basic",
@@ -494,6 +675,17 @@ const router = createRouter({
   history: createWebHistory("/laramed-front/"),
   routes,
   linkActiveClass: "active",
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.isAuth)) {
+    let user = JSON.parse(localStorage.getItem("user"));
+
+    if (!user) {
+      next("/authentication/signin");
+    }
+  }
+  next();
 });
 
 export default router;

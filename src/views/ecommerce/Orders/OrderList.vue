@@ -212,6 +212,7 @@ export default {
       img4,
       img5,
       img6,
+      uRole: "",
     };
   },
   mounted() {
@@ -242,6 +243,7 @@ export default {
   },
   async created() {
     await this.$store.dispatch("loadEnquiries");
+    this.uRole = this.$store.state.auth.user.role;
   },
   computed: {
     enquirylist() {

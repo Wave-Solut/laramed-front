@@ -663,7 +663,7 @@
               class="mb-0 btn btn-sm me-1"
               :class="btnBackground ? btnBackground : 'bg-white text-dark'"
               onclick="smoothToPricing('pricing-soft-ui')"
-              v-show="!this.isAuth"
+              v-show="this.isAuth"
               >Login</a
             >
             <a
@@ -671,7 +671,7 @@
               class="mb-0 btn btn-sm me-1"
               :class="btnBackground ? btnBackground : 'bg-white text-dark'"
               onclick="smoothToPricing('pricing-soft-ui')"
-              v-show="!this.isAuth"
+              v-show="this.isAuth"
               >Register</a
             >
             <a
@@ -679,7 +679,7 @@
               class="mb-0 btn btn-sm me-1"
               :class="btnBackground ? btnBackground : 'bg-white text-dark'"
               onclick="smoothToPricing('pricing-soft-ui')"
-              v-show="isAuth"
+              v-show="!isAuth"
               >Dashboard</a
             >
           </li>
@@ -726,7 +726,10 @@ export default {
     },
   },
   created() {
-    this.isAuth = this.$store.state.auth.authenticated;
+    let user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      this.isAuth = true;
+    }
   },
 };
 </script>

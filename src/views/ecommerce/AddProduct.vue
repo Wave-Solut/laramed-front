@@ -99,7 +99,7 @@
                   <label :for="`data[${index}]volume`" class="">Volume</label>
                   <input
                     class="form-control"
-                    type="text"
+                    type="number"
                     placeholder="i.e. 5 ml"
                     v-model="pform.volume"
                   />
@@ -114,9 +114,9 @@
                     v-model="pform.unit"
                   >
                     <option class="text-xs">ml</option>
-                    <option>mg</option>
-                    <option>L</option>
-                    <option>g</option>
+                    <option class="text-xs">mg</option>
+                    <option class="text-xs">L</option>
+                    <option class="text-xs">g</option>
                   </select>
                 </div>
 
@@ -191,7 +191,7 @@
                 <label class="">Strength</label>
                 <input
                   class="form-control"
-                  type="text"
+                  type="number"
                   value=""
                   placeholder="i.e. 50 mg"
                 />

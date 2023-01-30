@@ -98,7 +98,7 @@
                             id="choices-atc-edit"
                             class="form-control"
                             name="choices-atc"
-                            :v-model="selectedValuesAtc"
+                            v-on:change="selectedValuesAtc"
                             multiple
                           >
                             <option
@@ -117,7 +117,7 @@
                             id="choices-form-edit"
                             class="form-control"
                             name="choices-form"
-                            :v-model="selectedValuesForm"
+                            v-model="selectedValuesForm.svf"
                             multiple
                           >
                             <option
@@ -136,7 +136,7 @@
                             id="choices-country-edit"
                             class="form-control"
                             name="choices-country"
-                            :v-model="selectedValuesCountry"
+                            v-model="selectedValuesCountry.svc"
                             multiple
                           >
                             <option
@@ -302,334 +302,6 @@
         </div>
       </div>
     </div>
-
-    <div class="container pb-10 pb-lg-9 pt-7 postion-relative z-index-2 d-none">
-      <div class="row">
-        <div class="gap-4" v-if="Products.length > 0">
-          <div class="bg-white col-md-4 rounded-lg">
-            <div class="flex flex-col gap-4 lg:p-4 p-2 rounde-lg m-2">
-              <div
-                class="lg:text-2xl md:text-xl text-lg lg:p-3 p-1 font-black text-gray-700"
-              >
-                Filters
-              </div>
-              <div>
-                <h3 class="font-bold text-gray-700 text-left">ATC Class</h3>
-
-                <VueMultiselect
-                  v-model="selectedValuesAtc"
-                  :options="Atcs"
-                  :multiple="true"
-                  :searchable="searchable"
-                  @select="getFiltred"
-                  :hide-selected="true"
-                  placeholder="Type ATC"
-                  :custom-label="customLabel"
-                  track-by="id"
-                >
-                  <template #noResult> Type a Valid ATC ! </template>
-                </VueMultiselect>
-                <!--<pre class="user-json"><code>{{ selectedValuesAtc }}</code></pre>-->
-              </div>
-
-              <div>
-                <h3 class="font-bold text-gray-700 text-left">Form</h3>
-
-                <VueMultiselect
-                  v-model="selectedValuesForm"
-                  :options="Forms"
-                  :multiple="true"
-                  :searchable="searchable"
-                  @select="getFiltred"
-                  :hide-selected="true"
-                  placeholder="Type Form"
-                  label="name"
-                  track-by="id"
-                >
-                  <template #noResult> Type a Valid Form ! </template>
-                </VueMultiselect>
-                <!--<pre class="user-json"><code>{{ selectedValuesForm }}</code></pre>-->
-              </div>
-
-              <div>
-                <h3 class="font-bold text-gray-700 text-left">
-                  Country Of Origin
-                </h3>
-
-                <VueMultiselect
-                  v-model="selectedValuesCountry"
-                  :options="Countries"
-                  :multiple="true"
-                  :searchable="searchable"
-                  @select="getFiltred"
-                  :hide-selected="true"
-                  placeholder="Type Country"
-                  :custom-label="customCountryLabel"
-                  track-by="id"
-                >
-                  <template #noResult>
-                    Type a Valid Country Name or Code !
-                  </template>
-                </VueMultiselect>
-                <!-- <pre class="user-json"><code>{{ selectedValuesCountry }}</code></pre>-->
-              </div>
-            </div>
-          </div>
-          <div class="bg-gray-100 col-md-8 rounded-lg">
-            <div class="flex flex-col gap-4 lg:p-4 p-2 rounde-lg m-2">
-              <div
-                class="lg:text-2xl md:text-xl text-lg lg:p-3 p-1 font-black text-gray-700"
-              >
-                {{ Products.length }}
-                Product(s) for sale
-              </div>
-
-              <div
-                class="relative"
-                v-for="product in Products"
-                :key="product.product.id"
-              >
-                <div
-                  class="max-w-lg overflow-hidden rounded-lg shadow-lg lg:max-w-none lg:flex"
-                >
-                  <div class="flex-1 px-6 py-8 bg-white lg:p-4">
-                    <h3
-                      class="text-2xl font-extrabold text-gray-900 sm:text-3xl text-left"
-                    >
-                      {{ product.product.branded_name }}
-                    </h3>
-                    <div v-for="form in product.forms" :key="form.id">
-                      <p class="text-base text-gray-500 text-left">
-                        {{ form.name }} - {{ form.volume }}
-                      </p>
-                    </div>
-                    <div class="mt-2">
-                      <div class="flex items-center">
-                        <h4
-                          class="flex-shrink-0 pr-4 text-sm font-semibold tracking-wider text-gray-900 uppercase bg-white"
-                        >
-                          Manufacturer #1765
-                        </h4>
-                        <div class="flex-1 border-t-2 border-gray-200"></div>
-                      </div>
-                      <div class="flex items-center">
-                        <p class="text-base text-gray-500 text-left">
-                          A pharmaceutical manufacturer based in the EU that is
-                          active in 10+ countries selling its products in
-                          Europe, CIS, Asia, and the East for 20+ years. The
-                          production facilities are cGMP compliant. The main
-                          dosage forms are solid dosage forms. The company
-                          provides documentation in CTD/eCTD format and
-                          stability studies. The company has several branches in
-                          Europe.
-                        </p>
-                      </div>
-                      <div class="flex items-center">
-                        <h4
-                          class="flex-shrink-0 pr-4 text-sm font-semibold tracking-wider text-gray-900 uppercase bg-white"
-                        >
-                          Countries
-                        </h4>
-                        <div class="flex-1 border-t-2 border-gray-200"></div>
-                      </div>
-                      <div
-                        class="flex items-center"
-                        v-for="country in product.countries"
-                        :key="country.id"
-                      >
-                        <p class="text-base text-gray-500 text-left">
-                          {{ country.name }} -
-                          {{ country.code }}
-                        </p>
-                      </div>
-                      <ul
-                        class="mt-2 space-y-5 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-5"
-                      >
-                        <li class="flex items-start lg:col-span-1">
-                          <div class="flex-shrink-0">
-                            <svg
-                              class="w-5 h-5 text-green-400"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              aria-hidden="true"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                clip-rule="evenodd"
-                              ></path>
-                            </svg>
-                          </div>
-                          <p class="text-sm text-gray-700 text-left">
-                            Category :
-                            {{ product.product.categoryName }}
-                          </p>
-                        </li>
-                        <li class="flex items-start lg:col-span-1">
-                          <div class="flex-shrink-0">
-                            <svg
-                              class="w-5 h-5 text-green-400"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              aria-hidden="true"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                clip-rule="evenodd"
-                              ></path>
-                            </svg>
-                          </div>
-                          <p class="ml-1 text-sm text-gray-700 text-left">
-                            Agency product number :
-                            {{ product.product.product_number }}
-                          </p>
-                        </li>
-                        <li class="flex items-start lg:col-span-1">
-                          <div class="flex-shrink-0">
-                            <svg
-                              class="w-5 h-5 text-green-400"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              aria-hidden="true"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                clip-rule="evenodd"
-                              ></path>
-                            </svg>
-                          </div>
-                          <p class="ml-1 text-sm text-gray-700 text-left">
-                            Marketing-authorisation holder :{{
-                              product.product.marketing_auth_holder
-                            }}
-                          </p>
-                        </li>
-                        <li class="flex items-start lg:col-span-1">
-                          <div class="flex-shrink-0">
-                            <svg
-                              class="w-5 h-5 text-green-400"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              aria-hidden="true"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                clip-rule="evenodd"
-                              ></path>
-                            </svg>
-                          </div>
-                          <p class="ml-1 text-sm text-gray-700 text-left">
-                            ATC Code :
-                            {{ product.product.atc }} ({{
-                              product.product.atcDescription
-                            }}
-                            )
-                          </p>
-                        </li>
-                        <li class="flex items-start lg:col-span-1">
-                          <div class="flex-shrink-0">
-                            <svg
-                              class="w-5 h-5 text-green-400"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              aria-hidden="true"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                clip-rule="evenodd"
-                              ></path>
-                            </svg>
-                          </div>
-                          <p class="ml-1 text-sm text-gray-700 text-left">
-                            Active Substance :
-                          </p>
-                          <div
-                            v-for="substance in product.substances"
-                            :key="substance.id"
-                          >
-                            <p class="ml-1 text-sm text-gray-700 text-left">
-                              {{ substance.name }}
-                            </p>
-                          </div>
-                        </li>
-                        <li class="flex items-start lg:col-span-1">
-                          <div class="flex-shrink-0">
-                            <svg
-                              class="w-5 h-5 text-green-400"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              aria-hidden="true"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                clip-rule="evenodd"
-                              ></path>
-                            </svg>
-                          </div>
-                          <p class="ml-1 text-sm text-gray-700 text-left">
-                            Other Informations
-                          </p>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div
-                    class="px-6 py-8 text-center bg-gray-50 lg:flex-shrink-0 lg:flex lg:flex-col lg:justify-center lg:p-12"
-                    style="cursor: auto"
-                  >
-                    <div
-                      class="flex items-center justify-center mt-4 text-xl font-bold text-gray-900"
-                    >
-                      <span class="ml-1 mr-3 text-xl font-medium text-gray-500"
-                        >Average price
-                      </span>
-                      <span>{{ product.product.price }}</span>
-                      <span class="ml-1 text-xl font-medium text-gray-500"
-                        >/ pack</span
-                      >
-                    </div>
-                    <div class="mt-6">
-                      <div class="rounded-md shadow">
-                        <a
-                          :href="'//' + 'localhost:8080/pages/checkout'"
-                          :params="{ id: product.product.id }"
-                          :data="{ id: product.product.id }"
-                          class="flex items-center justify-center w-full px-5 py-3 text-base font-medium text-white bg-gray-800 border border-transparent rounded-md hover:bg-gray-900"
-                          target="_blank"
-                          >Send Inquiry</a
-                        >
-                      </div>
-                    </div>
-                    <div class="mt-4 text-sm">
-                      <a
-                        href="#"
-                        class="font-medium text-gray-700 hover:text-gray-900"
-                        target="_blank"
-                        >Manufacturer usually replies
-                        <span class="font-bold">6 days</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!--------------------------------------------------End Card Test ------------------------->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </main>
   <app-footer />
 </template>
@@ -664,12 +336,15 @@ export default {
       idc: null,
       urlHasSetting: false,
       valc: null,
-      selectedValuesAtc: [],
-      selectedValuesForm: [],
-      selectedValuesCountry: [],
-      sva: null,
-      svf: null,
-      svc: null,
+      selectedValuesAtc: {
+        sva: null,
+      },
+      selectedValuesForm: {
+        svf: null,
+      },
+      selectedValuesCountry: {
+        svc: null,
+      },
     };
   },
   watch: {
@@ -749,9 +424,9 @@ export default {
           params: {
             keyword: this.keyword,
             category: this.idc,
-            sva: this.selectedValuesAtc,
-            svf: this.selectedValuesForm,
-            svc: this.selectedValuesCountry,
+            sva: this.selectedValuesAtc.sva,
+            svf: this.selectedValuesForm.svf,
+            svc: this.selectedValuesCountry.svc,
           },
         })
         .then((res) => (this.Products = res.data))

@@ -13,12 +13,78 @@
                   <b>{{ enquiryData.enquiryinfo.created_at }}</b>
                 </p>
               </div>
-              <argon-button
-                color="secondary"
-                variant="gradient"
-                class="ms-auto mb-0"
-                >Invoice</argon-button
+
+              <button
+                type="button"
+                class="mx-1 mb-0 btn btn-outline-success btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#chat"
               >
+                Contact Vendor
+                <i class="fa fa-comment-o me-1"></i>
+              </button>
+              <div
+                id="chat"
+                class="modal fade"
+                tabindex="-1"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog mt-lg-10">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 id="ModalLabel" class="modal-title">
+                        Write your message to vendor
+                      </h5>
+                      <i class="fa fa-comment-o ms-3"></i>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <textarea
+                        type="text"
+                        placeholder="Your Message"
+                        class="mb-3 form-control"
+                        v-model="enqChat.message"
+                      />
+                      <div class="form-check">
+                        <input
+                          id="chatCheck"
+                          class="form-check-input"
+                          type="checkbox"
+                          value=""
+                          checked="false"
+                        />
+
+                        <label class="custom-control-label" for="chatCheck"
+                          >I accept the terms and conditions and I confirm that
+                          i didn't communicate any contact informations
+                        </label>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn bg-gradient-secondary btn-sm"
+                        data-bs-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button
+                        type="button"
+                        class="btn bg-gradient-success btn-sm"
+                        @click="sendMessage"
+                      >
+                        Send
+                        <i class="fa fa-paper-plane me-2"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <span
               class="badge badge-sm"
@@ -110,109 +176,7 @@
             </div>
             <hr class="horizontal dark mt-4 mb-4" />
             <div class="row">
-              <div class="col-lg-3 col-md-6 col-12">
-                <h6 class="mb-3">Track order</h6>
-                <div class="timeline timeline-one-side">
-                  <div class="timeline-block mb-3">
-                    <span class="timeline-step">
-                      <i class="ni ni-bell-55 text-secondary"></i>
-                    </span>
-                    <div class="timeline-content">
-                      <h6 class="text-dark text-sm font-weight-bold mb-0">
-                        Order received
-                      </h6>
-                      <p
-                        class="text-secondary font-weight-bold text-xs mt-1 mb-0"
-                      >
-                        22 DEC 7:20 AM
-                      </p>
-                    </div>
-                  </div>
-                  <div class="timeline-block mb-3">
-                    <span class="timeline-step">
-                      <i class="ni ni-html5 text-secondary"></i>
-                    </span>
-                    <div class="timeline-content">
-                      <h6 class="text-dark text-sm font-weight-bold mb-0">
-                        Generate order id #1832412
-                      </h6>
-                      <p
-                        class="text-secondary font-weight-bold text-xs mt-1 mb-0"
-                      >
-                        22 DEC 7:21 AM
-                      </p>
-                    </div>
-                  </div>
-                  <div class="timeline-block mb-3">
-                    <span class="timeline-step">
-                      <i class="ni ni-cart text-secondary"></i>
-                    </span>
-                    <div class="timeline-content">
-                      <h6 class="text-dark text-sm font-weight-bold mb-0">
-                        Order transmited to courier
-                      </h6>
-                      <p
-                        class="text-secondary font-weight-bold text-xs mt-1 mb-0"
-                      >
-                        22 DEC 8:10 AM
-                      </p>
-                    </div>
-                  </div>
-                  <div class="timeline-block mb-3">
-                    <span class="timeline-step">
-                      <i
-                        class="ni ni-check-bold text-success text-gradient"
-                      ></i>
-                    </span>
-                    <div class="timeline-content">
-                      <h6 class="text-dark text-sm font-weight-bold mb-0">
-                        Order delivered
-                      </h6>
-                      <p
-                        class="text-secondary font-weight-bold text-xs mt-1 mb-0"
-                      >
-                        22 DEC 4:54 PM
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-5 col-md-6 col-12">
-                <h6 class="mb-3">Payment Status</h6>
-
-                <div class="d-flex align-items-center mb-4">
-                  <argon-button
-                    :color="
-                      enquiryData.enquiryinfo.payment_status === 'Paid'
-                        ? 'success'
-                        : enquiryData.enquiryinfo.payment_status ===
-                          'Waiting Payment'
-                        ? 'info'
-                        : 'danger'
-                    "
-                    variant="outline"
-                    class="btn-icon-only btn-rounded mb-0 me-2 btn-sm d-flex align-items-center justify-content-center"
-                  >
-                    <i
-                      class="fas"
-                      :class="
-                        enquiryData.enquiryinfo.payment_status === 'Paid'
-                          ? 'fa-check'
-                          : enquiryData.enquiryinfo.payment_status ===
-                            'Waiting Payment'
-                          ? 'fa-exclamation-triangle'
-                          : enquiryData.enquiryinfo.payment_status ===
-                            'Refunded'
-                          ? 'fa-undo'
-                          : 'fa-times'
-                      "
-                      aria-hidden="true"
-                    ></i>
-                  </argon-button>
-                  <span class="text-xs">{{
-                    enquiryData.enquiryinfo.payment_status
-                  }}</span>
-                </div>
+              <div class="col-lg-6 col-md-6 col-12">
                 <h6 class="mb-3">Billing Information</h6>
                 <ul class="list-group">
                   <li
@@ -244,7 +208,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="col-lg-3 col-12 ms-auto">
+              <div class="col-lg-6 col-12 ms-auto">
                 <h6 class="mb-3">Order Summary</h6>
                 <div class="d-flex justify-content-between">
                   <span class="mb-2 text-sm">Product Price:</span>
@@ -289,26 +253,6 @@
                   </select>
                   <span>Chosen item: {{ enqstatus.enquiryStatus }}</span>
                 </div>
-                <div class="justify-content-left mb-2">
-                  <label>Update Payment Status</label>
-                  <select
-                    id="choices-pstatus-edit"
-                    class="form-control"
-                    name="choices-pstatus"
-                    v-model="enqstatus.enquiryPaymentStatus"
-                  >
-                    <option
-                      class="text-xs"
-                      v-for="pstatusValue in pstatusList"
-                      :value="pstatusValue"
-                      :key="pstatusValue"
-                      :selected="statusValue == enqstatus.enquiryPaymentStatus"
-                    >
-                      {{ pstatusValue }}
-                    </option>
-                  </select>
-                  <span>Chosen item: {{ enqstatus.enquiryPaymentStatus }}</span>
-                </div>
               </div>
               <div class="col-lg-5 col-12 ms-auto">
                 <div class="d-flex justify-content-end">
@@ -327,36 +271,44 @@
         </div>
       </div>
     </div>
-    <b>{{ enquiryData }}</b>
   </div>
 </template>
 
 <script>
-import ArgonButton from "@/components/ArgonButton.vue";
 import Choices from "choices.js";
 import axios from "axios";
 
 export default {
   name: "EnquiryDetails",
-  components: {
-    ArgonButton,
-  },
+  components: {},
   data() {
     return {
+      userRole: "",
       enqstatus: {
         enquiryStatus: "",
-        enquiryPaymentStatus: "",
+      },
+      enqChat: {
+        enqId: "",
+        message: "",
+        vendorId: "",
+        customerId: "",
       },
 
-      statusList: ["In Progress", "Delivred", "Canceled"],
-      pstatusList: ["Waiting Payment", "Paid", "Refunded", "Canceled"],
+      statusList: [
+        "Waiting for Vendor Approval",
+        "In Progress",
+        "Delivred",
+        "Canceled",
+      ],
     };
   },
   async created() {
     await this.$store.dispatch("loadEnquiry", this.$route.params.id);
     this.enqstatus.enquiryStatus = this.$store.state.enquiry.enquiryinfo.status;
-    this.enqstatus.enquiryPaymentStatus =
-      this.$store.state.enquiry.enquiryinfo.payment_status;
+    this.userRole = this.$store.state.auth.user.role;
+    this.enqChat.enqId = this.$store.state.enquiry.enquiryinfo.id;
+    this.enqChat.vendorId = this.$store.state.enquiry.enquiryinfo.vendor_id;
+    this.enqChat.customerId = this.$store.state.enquiry.enquiryinfo.customer_id;
   },
   computed: {
     enquiryData() {
@@ -365,7 +317,6 @@ export default {
   },
   mounted() {
     this.getChoices("choices-status-edit");
-    this.getChoices("choices-pstatus-edit");
   },
   methods: {
     getChoices(id) {
@@ -377,11 +328,30 @@ export default {
         });
       }
     },
-    async saveAtc() {
+    async saveEnquiry() {
       console.log(this.$route.params.id);
 
       await axios
         .put("/enquiry/" + this.$route.params.id, this.enqstatus)
+        .then(({ data }) => {
+          console.log(data.message);
+          this.errMessage = data.message;
+          this.isResult = true;
+        })
+        .catch(({ data }) => {
+          this.errMessage = data.message;
+          this.isError = true;
+          this.isResult = true;
+        })
+        .finally(() => {
+          //this.vatc.name = this.$store.state.country.name;
+        });
+    },
+    async sendMessage() {
+      console.log(this.$route.params.id);
+
+      await axios
+        .put("/chat" + this.$route.params.id, this.enqChat)
         .then(({ data }) => {
           console.log(data.message);
           this.errMessage = data.message;

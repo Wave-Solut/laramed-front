@@ -72,7 +72,7 @@
             <div class="row">
               <h5 class="mt-4">Forms</h5>
               <div class="row" v-for="pform in product.forms" :key="pform.id">
-                <div class="col-6">
+                <div class="col-12">
                   <label>Form </label>
                   <select
                     id="choices-form-edit"
@@ -93,10 +93,25 @@
                   <label class="">Volume</label>
                   <input
                     class="form-control"
-                    type="text"
+                    type="number"
                     :value="pform.volume"
                     placeholder="i.e. 5 ml"
                   />
+                </div>
+                <div class="col-6">
+                  <label>Unit</label>
+
+                  <select
+                    id="choices-unit-edit"
+                    class="form-control"
+                    name="choices-unit"
+                    v-model="pform.unit"
+                  >
+                    <option class="text-xs">ml</option>
+                    <option class="text-xs">mg</option>
+                    <option class="text-xs">L</option>
+                    <option class="text-xs">g</option>
+                  </select>
                 </div>
               </div>
 
@@ -193,8 +208,11 @@
               <h5 class="font-weight-bolder">Pricing</h5>
               <div class="col-6">
                 <label>Price</label>
-                <input class="form-control" type="number"
-                :value=(parseFloat(product.productinfo.price).toFixed(2)/100).toFixed(2)
+                <!--</input>:value=(parseFloat(product.productinfo.price).toFixed(2)/100).toFixed(2)-->
+                <input
+                  class="form-control"
+                  type="number"
+                  :value="product.productinfo.price"
                 />
               </div>
               <div class="col-6">
@@ -268,7 +286,7 @@ export default {
     this.getChoices("choices-category-edit");
     this.getChoices("choices-atc-edit");
     this.getChoices("choices-form-edit");
-    //this.getChoices("choices-substance-edit");
+    this.getChoices("choices-unit-edit");
     this.getChoices("choices-currency-edit");
 
     if (document.getElementById("choices-countries-edit")) {

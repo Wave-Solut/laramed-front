@@ -141,11 +141,33 @@
             </div>-->
             <div class="card-body">
               <form role="form">
-                <span
-                  class="error_message text-danger text-xs mb-4"
-                  v-show="isErrorLogin"
-                  >{{ errMessage }}</span
+                <div
+                  class="alert alert-success text-center"
+                  v-show="isResponse"
+                  :class="isErrorLogin ? 'alert-danger' : 'alert-success'"
+                  role="alert"
                 >
+                  <span class="alert-text text-white text-center text-xs"
+                    ><strong v-show="isErrorLogin"
+                      >Register Failed !
+                      <span class="text-xs">{{ errMessage }}</span>
+                    </strong>
+                    <strong v-show="!isErrorLogin">Register Successful </strong>
+
+                    <a
+                      href="/dashboard/welcome"
+                      class="mb-0 btn btn-xs me-1 mx-3"
+                      v-show="!isErrorLogin"
+                      :class="
+                        btnBackground ? btnBackground : 'bg-white text-dark'
+                      "
+                      onclick="smoothToPricing('pricing-soft-ui')"
+                    >
+                      Go to Dashboard</a
+                    >
+                  </span>
+                </div>
+
                 <br />
                 <label>Full Name / Orgnization Name</label>
                 <input
@@ -207,6 +229,7 @@
                 <div class="text-center">
                   <button
                     class="mb-0 btn bg-gradient-success btn-sm me-2 w-100"
+                    :class="isResponse"
                     type="button"
                     name="button"
                     @click="register"
@@ -262,6 +285,7 @@ export default {
       },
       token: "",
       isErrorLogin: false,
+      isResponse: false,
       errMessage: "",
     };
   },
@@ -295,11 +319,14 @@ export default {
           localStorage.setItem("token", response.data.authorisation.token);
           localStorage.setItem("user", JSON.stringify(response.data.user));
           this.signIn();
+          this.isResponse = true;
         })
-        .catch(({ data }) => {
+        .catch(({ response }) => {
           //alert(data.message)
-          this.errMessage = data.message;
+          //alert(response.data);
+          this.errMessage = response.data.message;
           this.isErrorLogin = true;
+          this.isResponse = true;
         })
         .finally(() => {
           //alert("login finish ")

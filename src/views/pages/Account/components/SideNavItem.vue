@@ -13,7 +13,9 @@
       <div class="col-sm-auto col-8 my-auto">
         <div class="h-100">
           <h5 class="mb-1 font-weight-bolder">{{ user.full_name }}</h5>
-          <p class="mb-0 font-weight-bold text-sm">{{ user.role }}</p>
+          <p class="mb-0 font-weight-bold text-sm">
+            {{ user.role }} #{{ user.id }}
+          </p>
         </div>
       </div>
       <div class="col-sm-auto ms-sm-auto mt-sm-0 mt-3 d-flex">

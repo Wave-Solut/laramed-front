@@ -19,8 +19,32 @@
                 class="mx-1 mb-0 btn btn-outline-success btn-sm"
                 data-bs-toggle="modal"
                 data-bs-target="#chat"
+                @click="getChatHistory"
+                v-show="this.userRole === 'customer'"
               >
                 Contact Vendor
+                <i class="fa fa-comment-o me-1"></i>
+              </button>
+              <button
+                type="button"
+                class="mx-1 mb-0 btn btn-outline-success btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#chat"
+                @click="getChatHistory"
+                v-show="this.userRole === 'vendor'"
+              >
+                Contact Customer
+                <i class="fa fa-comment-o me-1"></i>
+              </button>
+              <button
+                type="button"
+                class="mx-1 mb-0 btn btn-outline-success btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#chat"
+                @click="getChatHistory"
+                v-show="this.userRole === 'admin'"
+              >
+                View Chat
                 <i class="fa fa-comment-o me-1"></i>
               </button>
               <div
@@ -32,9 +56,7 @@
                 <div class="modal-dialog mt-lg-10">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 id="ModalLabel" class="modal-title">
-                        Write your message to vendor
-                      </h5>
+                      <h5 id="ModalLabel" class="modal-title">Chat</h5>
                       <i class="fa fa-comment-o ms-3"></i>
                       <button
                         type="button"
@@ -44,13 +66,50 @@
                       ></button>
                     </div>
                     <div class="modal-body">
+                      <div class="card my-2">
+                        <div
+                          class="card-header p-3 me-4"
+                          style="max-height: 250px; overflow-y: auto"
+                        >
+                          <div
+                            class="card my-4"
+                            v-for="message in chats"
+                            :key="message.id"
+                          >
+                            <div class="card-header p-3 text-right">
+                              <span class="text-xs me-2">
+                                [{{ message.created_at }}] :
+                              </span>
+                              <span
+                                class="text-xs text-gray-900"
+                                v-show="message.from_user === current_user"
+                              >
+                                {{ this.userRole }}
+                              </span>
+                              <span
+                                class="text-xs"
+                                v-show="!(message.from_user === current_user)"
+                                ><small>Partner</small>
+                              </span>
+                              <span class="text-xs mx-3">
+                                {{ message.content }}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                       <textarea
+                        v-show="!(this.userRole == 'admin')"
                         type="text"
                         placeholder="Your Message"
                         class="mb-3 form-control"
-                        v-model="enqChat.message"
+                        v-model="enqChat.content"
                       />
-                      <div class="form-check">
+                      <div
+                        class="form-check"
+                        v-show="!(this.userRole == 'admin')"
+                      >
                         <input
                           id="chatCheck"
                           class="form-check-input"
@@ -65,7 +124,10 @@
                         </label>
                       </div>
                     </div>
-                    <div class="modal-footer">
+                    <div
+                      class="modal-footer"
+                      v-show="!(this.userRole == 'admin')"
+                    >
                       <button
                         type="button"
                         class="btn bg-gradient-secondary btn-sm"
@@ -234,7 +296,10 @@
                 </div>
               </div>
               <hr class="horizontal dark mt-4 mb-4" />
-              <div class="col-lg-5 col-12">
+              <div
+                class="col-lg-5 col-12"
+                v-show="!(this.userRole === 'customer')"
+              >
                 <div class="justify-content-left mb-2">
                   <label>Update Status</label>
                   <select
@@ -251,12 +316,13 @@
                       :selected="statusValue === enqstatus.enquiryStatus"
                     ></option>
                   </select>
-                  <span>Chosen item: {{ enqstatus.enquiryStatus }}</span>
+                  <!--<span>Chosen item: {{ enqstatus.enquiryStatus }}</span>-->
                 </div>
               </div>
               <div class="col-lg-5 col-12 ms-auto">
                 <div class="d-flex justify-content-end">
                   <button
+                    v-show="!(this.userRole === 'customer')"
                     class="mb-0 btn bg-gradient-success btn-sm"
                     type="button"
                     name="button"
@@ -281,20 +347,24 @@ import axios from "axios";
 export default {
   name: "EnquiryDetails",
   components: {},
+
   data() {
     return {
+      chats: [],
+      current_user: "",
       userRole: "",
       enqstatus: {
         enquiryStatus: "",
       },
       enqChat: {
-        enqId: "",
-        message: "",
-        vendorId: "",
-        customerId: "",
+        enquiry_id: "",
+        content: "",
+        from_user: "",
+        to_user: "",
       },
 
       statusList: [
+        "Select Status",
         "Waiting for Vendor Approval",
         "In Progress",
         "Delivred",
@@ -306,9 +376,17 @@ export default {
     await this.$store.dispatch("loadEnquiry", this.$route.params.id);
     this.enqstatus.enquiryStatus = this.$store.state.enquiry.enquiryinfo.status;
     this.userRole = this.$store.state.auth.user.role;
-    this.enqChat.enqId = this.$store.state.enquiry.enquiryinfo.id;
-    this.enqChat.vendorId = this.$store.state.enquiry.enquiryinfo.vendor_id;
-    this.enqChat.customerId = this.$store.state.enquiry.enquiryinfo.customer_id;
+    this.current_user = this.$store.state.auth.user.id;
+    this.enqChat.enquiry_id = this.$store.state.enquiry.enquiryinfo.id;
+
+    if (this.userRole === "vendor") {
+      this.enqChat.from_user = this.$store.state.enquiry.enquiryinfo.vendor_id;
+      this.enqChat.to_user = this.$store.state.enquiry.enquiryinfo.customer_id;
+    } else if (this.userRole === "customer") {
+      this.enqChat.from_user =
+        this.$store.state.enquiry.enquiryinfo.customer_id;
+      this.enqChat.to_user = this.$store.state.enquiry.enquiryinfo.vendor_id;
+    }
   },
   computed: {
     enquiryData() {
@@ -329,8 +407,6 @@ export default {
       }
     },
     async saveEnquiry() {
-      console.log(this.$route.params.id);
-
       await axios
         .put("/enquiry/" + this.$route.params.id, this.enqstatus)
         .then(({ data }) => {
@@ -347,14 +423,33 @@ export default {
           //this.vatc.name = this.$store.state.country.name;
         });
     },
-    async sendMessage() {
-      console.log(this.$route.params.id);
-
+    async getChatHistory() {
       await axios
-        .put("/chat" + this.$route.params.id, this.enqChat)
+        .get("/chat/" + this.$store.state.enquiry.enquiryinfo.id)
         .then(({ data }) => {
+          this.chats = data;
+          console.log(data);
+          this.errMessage = data.message;
+          this.isResult = true;
+        })
+        .catch(({ data }) => {
+          this.errMessage = data.message;
+          this.isError = true;
+          this.isResult = true;
+        })
+        .finally(() => {
+          //this.vatc.name = this.$store.state.country.name;
+        });
+    },
+    async sendMessage() {
+      await axios
+        .post("chat", this.enqChat)
+        .then(({ data }) => {
+          this.enqChat.content = "";
+          this.getChatHistory();
           console.log(data.message);
           this.errMessage = data.message;
+
           this.isResult = true;
         })
         .catch(({ data }) => {

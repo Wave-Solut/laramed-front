@@ -11,7 +11,7 @@
     <div class="multisteps-form__content">
       <div class="row text-start">
         <div class="mt-3 col-12 col-md-12 ms-auto">
-          <label>Market(s) of interest</label>
+          <label>Market(s) of interest (Where you will sell the product)</label>
           <select
             id="choices-country"
             class="form-control"
@@ -49,13 +49,14 @@
           >
             Prev
           </button>
+
           <button
             class="mb-0 btn bg-gradient-dark ms-auto js-btn-next"
             type="button"
-            title="Next"
-            @click="$parent.nextStep"
+            title="Send Request"
+            @click="submitData"
           >
-            Next
+            Send Request
           </button>
         </div>
       </div>
@@ -85,8 +86,15 @@ export default {
       },
     };
   },
-  methods: {},
-  watch: {
+  methods: {
+    submitData() {
+      this.$emit("passData", {
+        countries: this.country_id,
+        comment: this.comment,
+      });
+    },
+  },
+  /*watch: {
     country_id() {
       this.$emit("passData", {
         countries: this.country_id,
@@ -99,7 +107,7 @@ export default {
         comment: this.comment,
       });
     },
-  },
+  },*/
   mounted() {
     if (document.getElementById("choices-country")) {
       var country = document.getElementById("choices-country");

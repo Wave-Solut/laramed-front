@@ -72,7 +72,7 @@
             <div class="row">
               <h5 class="mt-4">Forms</h5>
               <div class="row" v-for="pform in product.forms" :key="pform.id">
-                <div class="col-12">
+                <div class="col-8">
                   <label>Form </label>
                   <select
                     id="choices-form-edit"
@@ -89,6 +89,30 @@
                     </option>
                   </select>
                 </div>
+
+                <div class="col-12">
+                  <label class="mt-4">Pack Size</label>
+
+                  <select
+                    id="choices-packsize-edit"
+                    class="form-control"
+                    name="choices-sizes"
+                    multiple
+                  >
+                    <option
+                      v-for="psize in product.sizes"
+                      :value="psize.size"
+                      :key="psize.size"
+                      selected
+                    >
+                      {{ psize.size }}
+                    </option>
+                    <option v-for="size in 1000" :value="size" :key="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                </div>
+
                 <div class="col-6">
                   <label class="">Volume</label>
                   <input
@@ -299,6 +323,28 @@ export default {
       });
 
       countriesSelected.setChoices(
+        [
+          /*{
+            value: "Two",
+            label: "Out of Stock",
+            selected: true,
+          },*/
+        ],
+        "value",
+        "label",
+        false
+      );
+    }
+    if (document.getElementById("choices-packsize-edit")) {
+      var sizes = document.getElementById("choices-packsize-edit");
+      const sizesSelected = new Choices(sizes, {
+        removeItemButton: true,
+        searchEnabled: true,
+        allowHTML: true,
+        searchPlaceholderValue: "Type here",
+      });
+
+      sizesSelected.setChoices(
         [
           /*{
             value: "Two",

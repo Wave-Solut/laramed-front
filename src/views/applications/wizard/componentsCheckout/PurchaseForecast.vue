@@ -41,13 +41,27 @@
 
         <div class="mt-4 col-12 col-sm-6 mt-sm-0 text-start">
           <label>Pack Size</label>
-          <input
+          <select
+            id="choices-pack"
+            class="form-control"
+            name="choices-pack"
+            v-model="pack_size"
+          >
+            <option
+              v-for="pack in product.sizes"
+              :value="pack.size"
+              :key="pack.size"
+            >
+              {{ pack.size }}
+            </option>
+          </select>
+
+          <!--<input
             class="mb-3 multisteps-form__input form-control"
             type="number"
             placeholder="I.e. 20 "
             v-model="pack_size"
-          />
-          {{ pack_size }}
+          />-->
         </div>
 
         <div class="mt-4 col-12 col-sm-6 mt-sm-0 text-start">
@@ -58,26 +72,25 @@
             placeholder="Eg. quantity"
             v-model="product_quantity"
           />
-          {{ product_quantity }}
         </div>
       </div>
       <div class="mt-4 button-row d-flex">
-        <button
+        <!--<button
           class="mb-0 btn bg-gradient-light js-btn-prev"
           type="button"
           title="Prev"
           @click="$parent.prevStep"
         >
           Prev
-        </button>
+        </button>-->
 
         <button
           class="mb-0 btn bg-gradient-dark ms-auto"
           type="button"
-          title="Send Request"
-          @click="submitData"
+          title="Next"
+          @click="$parent.nextStep"
         >
-          Send
+          Next
         </button>
       </div>
     </div>
@@ -85,6 +98,7 @@
 </template>
 
 <script>
+import Choices from "choices.js";
 export default {
   name: "PurchaseForecast",
 
@@ -93,6 +107,9 @@ export default {
       type: Array,
     },
     forms: {
+      type: Array,
+    },
+    sizes: {
       type: Array,
     },
   },
@@ -106,14 +123,33 @@ export default {
       },
     };
   },
-
-  methods: {
-    submitData() {
+  watch: {
+    pack_size() {
       this.$emit("passData", {
-        //form_id: this.form_id,
         product_quantity: this.product_quantity,
         pack_size: this.pack_size,
       });
+    },
+    product_quantity() {
+      this.$emit("passData", {
+        product_quantity: this.product_quantity,
+        pack_size: this.pack_size,
+      });
+    },
+  },
+  mounted() {
+    this.getChoices("choices-pack");
+  },
+  methods: {
+    getChoices(id) {
+      if (document.getElementById(id)) {
+        var element = document.getElementById(id);
+
+        return new Choices(element, {
+          allowHTML: true,
+          searchPlaceholderValue: "Type here",
+        });
+      }
     },
   },
 };

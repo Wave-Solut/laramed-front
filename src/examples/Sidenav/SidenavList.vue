@@ -143,7 +143,7 @@
           </template>
         </sidenav-collapse>
       </li>
-      <li class="nav-item">
+      <!--<li class="nav-item">
         <sidenav-collapse
           collapse-ref="pagesExamples"
           nav-text="Pages"
@@ -279,7 +279,7 @@
             </ul>
           </template>
         </sidenav-collapse>
-      </li>
+      </li>-->
 
       <li class="nav-item">
         <sidenav-collapse

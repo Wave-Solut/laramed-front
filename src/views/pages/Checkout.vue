@@ -31,7 +31,7 @@
           <div class="row">
             <div class="mx-auto my-5 col-12 col-lg-8">
               <div class="multisteps-form__progress">
-                <button
+                <!-- <button
                   class="multisteps-form__progress-btn"
                   type="button"
                   title="User Info"
@@ -39,26 +39,26 @@
                   @click="activeStep = 0"
                 >
                   <span class="text-white">Product Selection</span>
-                </button>
+                </button>-->
                 <button
                   class="multisteps-form__progress-btn"
                   type="button"
                   title="Address"
-                  :class="activeStep >= 1 ? activeClass : ''"
-                  @click="activeStep = 1"
+                  :class="activeStep >= 0 ? activeClass : ''"
+                  @click="activeStep = 0"
                 >
-                  <span class="text-white"
-                    >Deal type & markets of interest</span
-                  >
+                  <span class="text-white">Purchase forecast</span>
                 </button>
                 <button
                   class="multisteps-form__progress-btn"
                   type="button"
                   title="Order Info"
-                  :class="activeStep === 2 ? activeClass : ''"
-                  @click="activeStep = 2"
+                  :class="activeStep === 1 ? activeClass : ''"
+                  @click="activeStep = 1"
                 >
-                  <span class="text-white">Purchase forecast </span>
+                  <span class="text-white">
+                    Deal type & markets of interest
+                  </span>
                 </button>
               </div>
             </div>
@@ -68,23 +68,25 @@
             <div class="m-auto col-12 col-lg-8">
               <form class="multisteps-form__form">
                 <!--single form panel-->
-                <product-choice
+                <!-- <product-choice
                   v-if="activeStep === 0"
                   v-bind:product="product"
-                />
-                <!--single form panel-->
-                <deal-and-market
-                  :class="activeStep === 1 ? activeClass : ''"
-                  v-bind:countries="countries"
-                  @passData="GetcData($event)"
-                />
+                />-->
                 <!--single form panel-->
                 <purchase-forecast
+                  :class="activeStep === 0 ? activeClass : ''"
                   v-bind:product="product"
                   v-bind:forms="forms"
+                  v-bind:sizes="sizes"
                   ref="pf"
                   @passData="GetpfData($event)"
-                  :class="activeStep === 2 ? activeClass : ''"
+                />
+                <!--single form panel-->
+
+                <deal-and-market
+                  v-bind:countries="countries"
+                  @passData="GetcData($event)"
+                  :class="activeStep === 1 ? activeClass : ''"
                 />
               </form>
             </div>
@@ -109,7 +111,7 @@
 import Navbar from "@/examples/PageLayout/Navbar.vue";
 import AppFooter from "@/examples/PageLayout/Footer.vue";
 import setNavPills from "@/assets/js/nav-pills.js";
-import ProductChoice from "../applications/wizard/componentsCheckout/ProductChoice.vue";
+//import ProductChoice from "../applications/wizard/componentsCheckout/ProductChoice.vue";
 import DealAndMarket from "../applications/wizard/componentsCheckout/DealAndMarket.vue";
 import PurchaseForecast from "../applications/wizard/componentsCheckout/PurchaseForecast.vue";
 import axios from "axios";
@@ -119,7 +121,7 @@ export default {
   components: {
     Navbar,
     AppFooter,
-    ProductChoice,
+    //ProductChoice,
     PurchaseForecast,
     DealAndMarket,
   },
@@ -190,16 +192,27 @@ export default {
       //this.productInfoEnquiry.form_id = data.form_id;
       this.productInfoEnquiry.pack_size = data.pack_size;
       this.productInfoEnquiry.quantity = data.product_quantity;
-      this.storeEnquiry();
     },
     GetcData(data) {
       this.productInfoEnquiry.target_markets = data.countries;
       this.productInfoEnquiry.comment = data.comment;
+      this.storeEnquiry();
+    },
+    showSwal(type) {
+      if (type === "success-message") {
+        this.$swal({
+          icon: "success",
+          title: "Submit Enquiry!",
+          text: "Your Order has been submitted!",
+          type: type,
+        });
+      }
     },
     async storeEnquiry() {
       await axios
         .post("enquiry", this.productInfoEnquiry, this.axios_config)
         .then(({ data }) => {
+          this.showSwal("success-message");
           console.log(data.status);
           this.isResponse = true;
         })
@@ -214,6 +227,7 @@ export default {
         });
     },
   },
+
   beforeUnmount() {
     this.$store.state.showFooter = true;
     if (this.$store.state.isPinned === false) {

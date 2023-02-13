@@ -105,6 +105,9 @@
                             ? 'badge-success'
                             : enquiry.enquiryinfo.status === 'In Progress'
                             ? 'badge-info '
+                            : enquiry.enquiryinfo.status ===
+                              'Waiting for Vendor Approval'
+                            ? 'badge-warning '
                             : 'badge-danger'
                         "
                         >{{ enquiry.enquiryinfo.status }}</span

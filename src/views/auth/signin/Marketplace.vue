@@ -192,6 +192,16 @@
                                     >{{ form.name }} - {{ form.volume }}
                                   </small>
                                 </p>
+
+                                <p class="text-xs text-gray-500 text-left">
+                                  <small
+                                    class="text-muted text-xs"
+                                    v-for="pack in product.sizes"
+                                    :key="pack.size"
+                                  >
+                                    {{ pack.size }}/Pack .
+                                  </small>
+                                </p>
                               </div>
                               <hr />
                               <p class="text-bold text-xs">

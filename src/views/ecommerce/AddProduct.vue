@@ -76,7 +76,7 @@
                 v-for="(pform, index) in productForms"
                 :key="index"
               >
-                <div class="col-12">
+                <div class="col-8">
                   <label :for="`data[${index}]form`">Form </label>
                   <select
                     v-bind:id="`choices-form-edit-${index}`"
@@ -92,6 +92,21 @@
                       :key="form.id"
                     >
                       {{ form.name }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="col-12">
+                  <label class="mt-4">Pack Size</label>
+                  <select
+                    id="choices-packsize-edit"
+                    class="form-control"
+                    name="choices-packs"
+                    multiple
+                    v-model="productPack.size"
+                  >
+                    <option v-for="size in 1000" :value="size" :key="size">
+                      {{ size }}
                     </option>
                   </select>
                 </div>
@@ -267,10 +282,11 @@
           </div>
         </div>
       </div>
-      <b>{{ productInformations }}</b>
+      <!--<b>{{ productInformations }}</b>
       <b>{{ productSubstances }}</b>
       <b>{{ productForms }}</b>
-      <b>{{ productCountries }}</b>
+      <b>{{ productPack }}</b>
+      <b>{{ productCountries }}</b>-->
     </div>
   </div>
 </template>
@@ -278,6 +294,8 @@
 <script>
 import Choices from "choices.js";
 import axios from "axios";
+import router from "../../router";
+
 export default {
   name: "AddProduct",
 
@@ -285,7 +303,6 @@ export default {
   data() {
     return {
       productObject: [],
-
       productInformations: {
         branded_name: "",
         category_id: "",
@@ -309,6 +326,10 @@ export default {
       productCountries: {
         product_id: "",
         country_id: "",
+      },
+      productPack: {
+        product_id: "",
+        size: "",
       },
       productInsertedId: "",
       substanceInsertedId: "",
@@ -336,6 +357,7 @@ export default {
     this.getChoices("choices-form-edit-3");
     this.getChoices("choices-form-edit-4");
     this.getChoices("choices-unit-edit-0");
+
     //this.getChoices("choices-substance-edit");
     this.getChoices("choices-currency-edit");
 
@@ -359,8 +381,38 @@ export default {
         false
       );
     }
+    if (document.getElementById("choices-packsize-edit")) {
+      var sizes = document.getElementById("choices-packsize-edit");
+      const sizesSelected = new Choices(sizes, {
+        removeItemButton: true,
+        allowHTML: true,
+      });
+
+      sizesSelected.setChoices(
+        [
+          /*{
+            value: "Two",
+            label: "Out of Stock",
+            selected: true,
+          },*/
+        ],
+        "value",
+        "label",
+        false
+      );
+    }
   },
   methods: {
+    showSwal(type) {
+      if (type === "success-message") {
+        this.$swal({
+          icon: "success",
+          title: "Product Added!",
+          text: "Your Product has been submitted!",
+          type: type,
+        });
+      }
+    },
     getChoices(id) {
       if (document.getElementById(id)) {
         var element = document.getElementById(id);
@@ -395,8 +447,32 @@ export default {
         .post("productcountry", this.productCountries, this.axios_config)
         .then(({ data }) => {
           console.log(data.messsage);
+          this.showSwal("success-message");
+
           this.isErrorInsert = false;
           this.isResponse = true;
+        })
+        .catch(({ data }) => {
+          this.errMessage = data.messsage;
+          this.isErrorInsert = true;
+          this.isResponse = true;
+        })
+        .finally(() => {
+          if (!this.isErrorInsert) {
+            router.push({
+              name: "Product Info",
+              params: { id: this.productInsertedId },
+            });
+          }
+          //alert("login finish ")
+        });
+    },
+    async createProductPacks() {
+      await axios
+        .post("productsize", this.productPack, this.axios_config)
+        .then(({ data }) => {
+          console.log(data.messsage);
+          this.createProductCountries();
         })
         .catch(({ data }) => {
           this.errMessage = data.messsage;
@@ -412,7 +488,7 @@ export default {
         .post("productform", this.productForms, this.axios_config)
         .then(({ data }) => {
           console.log(data.messsage);
-          this.createProductCountries();
+          this.createProductPacks();
         })
         .catch(({ data }) => {
           this.errMessage = data.messsage;
@@ -464,6 +540,7 @@ export default {
     async updateProductId() {
       this.productSubstances.product_id = this.productInsertedId;
       this.productCountries.product_id = this.productInsertedId;
+      this.productPack.product_id = this.productInsertedId;
       await this.productForms.forEach(this.setProductInsertedId);
     },
     setProductInsertedId(item) {

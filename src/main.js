@@ -22,10 +22,12 @@ import "./assets/css/nucleo-svg.css";
 import VueTilt from "vue-tilt.js";
 import VueSweetalert2 from "vue-sweetalert2";
 import ArgonDashboard from "./argon-dashboard";
-import axios from 'axios';
+import axios from "axios";
 
-axios.defaults.baseURL = 'http://laramed.lcl/api/';
-axios.defaults.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+axios.defaults.baseURL = "https://api.onepharma.fr/api/";
+axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
+  "token"
+)}`;
 
 const appInstance = createApp(App);
 appInstance.use(store);

@@ -155,6 +155,9 @@
                   ? 'badge-success'
                   : enquiryData.enquiryinfo.status === 'In Progress'
                   ? 'badge-info '
+                  : enquiryData.enquiryinfo.status ===
+                    'Waiting for Vendor Approval'
+                  ? 'badge-warning '
                   : 'badge-danger'
               "
               >{{ enquiryData.enquiryinfo.status }}</span
@@ -397,6 +400,16 @@ export default {
     this.getChoices("choices-status-edit");
   },
   methods: {
+    showSwal(type) {
+      if (type === "success-message") {
+        this.$swal({
+          icon: "success",
+          title: "Update Enquiry status",
+          text: "Status has been submitted!",
+          type: type,
+        });
+      }
+    },
     getChoices(id) {
       if (document.getElementById(id)) {
         var element = document.getElementById(id);
@@ -410,9 +423,11 @@ export default {
       await axios
         .put("/enquiry/" + this.$route.params.id, this.enqstatus)
         .then(({ data }) => {
+          this.showSwal("success-message");
           console.log(data.message);
           this.errMessage = data.message;
           this.isResult = true;
+          window.location.reload();
         })
         .catch(({ data }) => {
           this.errMessage = data.message;

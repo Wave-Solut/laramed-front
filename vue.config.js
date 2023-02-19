@@ -1,3 +1,4 @@
 module.exports = {
-  publicPath: "/laramed-front/",
+  //publicPath: "/laramed-front/",
+  publicPath: "/",
 };

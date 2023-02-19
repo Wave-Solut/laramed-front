@@ -24,7 +24,7 @@ import VueSweetalert2 from "vue-sweetalert2";
 import ArgonDashboard from "./argon-dashboard";
 import axios from "axios";
 
-axios.defaults.baseURL = "https://api.onepharma.fr/api/";
+axios.defaults.baseURL = "https://staging.onepharma.fr/api/";
 axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
   "token"
 )}`;

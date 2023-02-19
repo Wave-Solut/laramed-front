@@ -672,7 +672,9 @@ const routes = [
 const router = createRouter({
   //history: createWebHistory(),
 
-  history: createWebHistory("/laramed-front/"),
+  //history: createWebHistory("/laramed-front/"),
+
+  history: createWebHistory("/"),
   routes,
   linkActiveClass: "active",
 });

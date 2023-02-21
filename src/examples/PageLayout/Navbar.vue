@@ -9,7 +9,7 @@
         class="navbar-brand font-weight-bolder ms-lg-0 ms-3"
         :class="darkMode ? 'text-black' : 'text-white'"
         to="/"
-        >Pipeline Pharma</router-link
+        >One Pharma</router-link
       >
       <button
         class="shadow-none navbar-toggler ms-2"
@@ -85,20 +85,16 @@
                 <a class="dropdown-item border-radius-md" href="javascript:;">
                   <div class="py-1 d-flex">
                     <div class="my-auto">
-                      <img
-                        src="../../assets/img/team-2.jpg"
-                        class="avatar avatar-sm me-3"
-                        alt="user image"
-                      />
+                   
                     </div>
                     <div class="d-flex flex-column justify-content-center">
                       <h6 class="mb-1 text-sm font-weight-normal">
-                        <span class="font-weight-bold">New message</span> from
-                        Laur
+                        <span class="font-weight-bold">Branded Name</span> from
+                        
                       </h6>
                       <p class="mb-0 text-xs text-secondary">
                         <i class="fa fa-clock me-1"></i>
-                        13 minutes ago
+                        ATC 
                       </p>
                     </div>
                   </div>
@@ -108,79 +104,30 @@
                 <a class="dropdown-item border-radius-md" href="javascript:;">
                   <div class="py-1 d-flex">
                     <div class="my-auto">
-                      <img
-                        src="../../assets/img/small-logos/logo-spotify.svg"
-                        class="avatar avatar-sm bg-gradient-dark me-3"
-                        alt="logo spotify"
-                      />
+                   
                     </div>
                     <div class="d-flex flex-column justify-content-center">
                       <h6 class="mb-1 text-sm font-weight-normal">
-                        <span class="font-weight-bold">New album</span> by
-                        Travis Scott
+                        <span class="font-weight-bold">Branded Name</span> Form
+                        
                       </h6>
                       <p class="mb-0 text-xs text-secondary">
                         <i class="fa fa-clock me-1"></i>
-                        1 day
+                        ATC
                       </p>
                     </div>
                   </div>
                 </a>
               </li>
-              <li>
-                <a class="dropdown-item border-radius-md" href="javascript:;">
-                  <div class="py-1 d-flex">
-                    <div
-                      class="my-auto avatar avatar-sm bg-gradient-secondary me-3"
-                    >
-                      <svg
-                        width="12px"
-                        height="12px"
-                        viewBox="0 0 43 36"
-                        version="1.1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink"
-                      >
-                        <title>credit-card</title>
-                        <g
-                          stroke="none"
-                          stroke-width="1"
-                          fill="none"
-                          fill-rule="evenodd"
-                        >
-                          <g
-                            transform="translate(-2169.000000, -745.000000)"
-                            fill="#FFFFFF"
-                            fill-rule="nonzero"
-                          >
-                            <g transform="translate(1716.000000, 291.000000)">
-                              <g transform="translate(453.000000, 454.000000)">
-                                <path
-                                  class="color-background"
-                                  d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"
-                                  opacity="0.593633743"
-                                />
-                                <path
-                                  class="color-background"
-                                  d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z"
-                                />
-                              </g>
-                            </g>
-                          </g>
-                        </g>
-                      </svg>
-                    </div>
-                    <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-1 text-sm font-weight-normal">
-                        Payment successfully completed
-                      </h6>
-                      <p class="mb-0 text-xs text-secondary">
-                        <i class="fa fa-clock me-1"></i>
-                        2 days
-                      </p>
-                    </div>
-                  </div>
-                </a>
+              <li class="text-center">
+                <a
+              href="/dashboard/welcome"
+              class="mb-0 btn btn-sm me-1"
+              :class="btnBackground ? btnBackground : 'bg-white text-dark'"
+              onclick="smoothToPricing('pricing-soft-ui')"
+              v-show="!isAuth"
+              >View Cart</a
+            >
               </li>
             </ul>
           </li>

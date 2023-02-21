@@ -26,7 +26,7 @@ id="iconSidenav"
             ? logoWhite
             : logo
         " class="navbar-brand-img h-100" alt="main_logo" />
-        <span class="ms-2 font-weight-bold">Pipeline Pharma</span>
+        <span class="ms-2 font-weight-bold">One Pharma</span>
       </router-link>
     </div>
     <hr class="mt-0 horizontal dark" />

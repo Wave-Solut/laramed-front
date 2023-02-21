@@ -40,3 +40,22 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD}}
           server-dir: /stagingfront/
           local-dir: ./dist/
+
+
+name: Build project ghpages
+on: [push]
+jobs:
+  build_vue:
+    runs-on: ubuntu-latest
+    name: Build Vue
+    steps:
+    - uses: actions/checkout@v2
+    - id: Build-Vue
+      uses: xRealNeon/VuePagesAction@1.0.0
+      with:
+        username: 'ahmed2807'
+        reponame: 'laramed-front'
+        token: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        VUE_APP_KEY: ${{ secrets.VUE_APP_KEY }}
+        VUE_APP_URL: ${{ secrets.VUE_APP_URL }}

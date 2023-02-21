@@ -22,7 +22,7 @@
         <div class="row justify-content-center">
           <div class="row">
             <div class="mx-auto text-center col-md-6 mt-4">
-              <h3 class="text-white">Pharma PIPELINE</h3>
+              <h3 class="text-white">ONE PHARMA</h3>
               <p class="text-white">
                 The largest B2B pharmaceutical products marketplace
               </p>

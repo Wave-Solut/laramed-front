@@ -11,6 +11,9 @@ const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
 });
 
+let cart = window.localStorage.getItem("cart");
+let cartCount = window.localStorage.getItem("cartCount");
+
 export default createStore({
   state: {
     hideConfigButton: false,
@@ -45,6 +48,8 @@ export default createStore({
     enquiry: [],
     users: [],
     user: [],
+    cart: cart ? JSON.parse(cart) : [],
+    cartCount: cartCount ? parseInt(cartCount) : 0,
   },
   mutations: {
     toggleConfigurator(state) {
@@ -171,10 +176,38 @@ export default createStore({
       let users = state.users.filter((p) => p.id != userId);
       state.users = users;
     },
+    ADD_TO_CART(state, item) {
+      //console.log(item.title);
+      state.cart.push(item);
+      state.cartCount++;
+    },
+    REMOVE_FROM_CART(state, item) {
+      let index = state.cart.indexOf(item);
+
+      if (index > -1) {
+        let product = state.cart[index];
+        state.cartCount -= product.quantity;
+
+        state.cart.splice(index, 1);
+      }
+    },
+    // Persist Cart
+    SAVE_CART(state) {
+      window.localStorage.setItem("cart", JSON.stringify(state.cart));
+      window.localStorage.setItem("cartCount", state.cartCount);
+    },
   },
   actions: {
     toggleSidebarColor({ commit }, payload) {
       commit("setSidebarType", payload);
+    },
+    addToCart({ commit }, item) {
+      commit("ADD_TO_CART", item);
+      commit("SAVE_CART");
+    },
+    removeFromCart({ commit }, item) {
+      commit("REMOVE_FROM_CART", item);
+      commit("SAVE_CART");
     },
     async loadProducts({ commit }) {
       await axios
@@ -434,6 +467,7 @@ export default createStore({
     getCountry: (state) => state.country,
     getEnquiries: (state) => state.enquiries,
     getEnquiry: (state) => state.enquiry,
+    getCart: (state) => state.cart,
   },
   plugins: [
     vuexLocal.plugin,

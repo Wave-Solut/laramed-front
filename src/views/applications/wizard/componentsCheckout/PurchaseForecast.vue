@@ -22,6 +22,7 @@
             :key="form.id"
             disabled
           />
+
           <!-- <select
             id="choices-form"
             class="form-control"
@@ -118,6 +119,8 @@ export default {
       form_id: "",
       product_quantity: "",
       pack_size: "",
+      product_name: this.product.productinfo.branded_name,
+      product_form: this.product.forms[0].name,
       config: {
         allowInput: true,
       },
@@ -128,12 +131,16 @@ export default {
       this.$emit("passData", {
         product_quantity: this.product_quantity,
         pack_size: this.pack_size,
+        product_name: this.product_name,
+        product_form: this.product_form,
       });
     },
     product_quantity() {
       this.$emit("passData", {
         product_quantity: this.product_quantity,
         pack_size: this.pack_size,
+        product_name: this.product_name,
+        product_form: this.product_form,
       });
     },
   },

@@ -115,6 +115,7 @@ import setNavPills from "@/assets/js/nav-pills.js";
 import DealAndMarket from "../applications/wizard/componentsCheckout/DealAndMarket.vue";
 import PurchaseForecast from "../applications/wizard/componentsCheckout/PurchaseForecast.vue";
 import axios from "axios";
+import router from "../../router";
 
 export default {
   name: "Checkout",
@@ -139,6 +140,8 @@ export default {
         pack_size: "",
         quantity: "",
         target_markets: "",
+        product_name: "",
+        product_form: "",
       },
       isResponse: false,
       isErrorInsert: false,
@@ -192,11 +195,14 @@ export default {
       //this.productInfoEnquiry.form_id = data.form_id;
       this.productInfoEnquiry.pack_size = data.pack_size;
       this.productInfoEnquiry.quantity = data.product_quantity;
+      this.productInfoEnquiry.product_name = data.product_name;
+      this.productInfoEnquiry.product_form = data.product_form;
     },
     GetcData(data) {
       this.productInfoEnquiry.target_markets = data.countries;
       this.productInfoEnquiry.comment = data.comment;
-      this.storeEnquiry();
+      //this.storeEnquiry();
+      this.storeEnquiryToBasket();
     },
     showSwal(type) {
       if (type === "success-message") {
@@ -207,6 +213,14 @@ export default {
           type: type,
         });
       }
+    },
+    async storeEnquiryToBasket() {
+      this.$store.state.cartCount++;
+      this.$store.state.cart.push(this.productInfoEnquiry);
+      console.log(this.$store.state.cart);
+      console.log(this.$store.state.cartCount);
+      this.showSwal("success-message");
+      router.push({ name: "Marketplace" });
     },
     async storeEnquiry() {
       await axios

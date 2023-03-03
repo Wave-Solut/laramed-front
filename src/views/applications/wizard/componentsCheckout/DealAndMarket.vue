@@ -56,7 +56,7 @@
             title="Send Request"
             @click="submitData"
           >
-            Send Request
+            Add To Basket
           </button>
         </div>
       </div>

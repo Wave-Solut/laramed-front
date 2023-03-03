@@ -81,53 +81,49 @@
               aria-labelledby="dropdownMenuButton"
               v-show="!isAuth"
             >
-              <li class="mb-2">
+              <li class="mb-2" v-for="item in cartItems" :key="item.product_id">
                 <a class="dropdown-item border-radius-md" href="javascript:;">
                   <div class="py-1 d-flex">
                     <div class="my-auto">
-                   
+                      <span
+                        class="removeBtn"
+                        title="Remove from cart"
+                        style="margin-right: 1rem; color: red"
+                        @click.prevent="removeFromCart(item)"
+                        >X</span
+                      >
                     </div>
                     <div class="d-flex flex-column justify-content-center">
                       <h6 class="mb-1 text-sm font-weight-normal">
-                        <span class="font-weight-bold">Branded Name</span> from
-                        
+                        <span class="font-weight-bold"
+                          >{{ item.product_name }} ({{
+                            item.product_form
+                          }})</span
+                        >
                       </h6>
                       <p class="mb-0 text-xs text-secondary">
-                        <i class="fa fa-clock me-1"></i>
-                        ATC 
+                        <i class="fa fa-box-open me-1"></i>
+                        Pack : {{ item.pack_size }} / pack
+                      </p>
+                      <p class="mb-0 text-xs text-secondary">
+                        <i class="fa fa-cubes me-1"></i>
+                        Quantity : {{ item.quantity }}
                       </p>
                     </div>
                   </div>
                 </a>
               </li>
-              <li class="mb-2">
-                <a class="dropdown-item border-radius-md" href="javascript:;">
-                  <div class="py-1 d-flex">
-                    <div class="my-auto">
-                   
-                    </div>
-                    <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-1 text-sm font-weight-normal">
-                        <span class="font-weight-bold">Branded Name</span> Form
-                        
-                      </h6>
-                      <p class="mb-0 text-xs text-secondary">
-                        <i class="fa fa-clock me-1"></i>
-                        ATC
-                      </p>
-                    </div>
-                  </div>
-                </a>
-              </li>
+
               <li class="text-center">
                 <a
-              href="/dashboard/welcome"
-              class="mb-0 btn btn-sm me-1"
-              :class="btnBackground ? btnBackground : 'bg-white text-dark'"
-              onclick="smoothToPricing('pricing-soft-ui')"
-              v-show="!isAuth"
-              >View Cart</a
-            >
+                  href="/dashboard/welcome"
+                  class="mb-0 btn btn-sm me-1"
+                  :class="btnBackground ? btnBackground : 'bg-white text-dark'"
+                  onclick="smoothToPricing('pricing-soft-ui')"
+                  v-show="!isAuth"
+                  @click.prevent="askPTC()"
+                  >Checkout</a
+                >
               </li>
             </ul>
           </li>
@@ -762,6 +758,7 @@
 <script>
 import downArrWhite from "@/assets/img/down-arrow-white.svg";
 import downArrBlack from "@/assets/img/down-arrow-dark.svg";
+import axios from "axios";
 
 export default {
   name: "Navbar",
@@ -786,6 +783,7 @@ export default {
       downArrBlack,
       isAuth: false,
       showMenu: false,
+      cartItems: [],
     };
   },
   computed: {
@@ -795,11 +793,117 @@ export default {
       };
     },
   },
+
   created() {
+    this.cartItems = this.$store.state.cart;
     let user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
       this.isAuth = true;
     }
+  },
+  methods: {
+    async removeFromCart(item) {
+      await this.$store.dispatch("removeFromCart", item);
+    },
+
+    showSwal(type) {
+      if (type === "success-message") {
+        this.$swal({
+          icon: "success",
+          title: "Submit Enquiry!",
+          text: "Your Order has been submitted!",
+          type: type,
+        });
+      } else if (type === "auto-close") {
+        let timerInterval;
+        this.$swal({
+          title: "Sending Order!",
+          html: "I will close in <b></b> milliseconds.",
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: () => {
+            this.$swal.showLoading();
+            const b = this.$swal.getHtmlContainer().querySelector("b");
+            timerInterval = setInterval(() => {
+              b.textContent = this.$swal.getTimerLeft();
+            }, 100);
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          },
+        });
+      } else if (type === "warning-message-and-cancel") {
+        this.$swal({
+          title: "Please verify your order details!",
+          text: "By Choosing 'Yes', you accept the terms and conditions of ONE PHARMA!",
+          icon: "warning",
+          showCancelButton: true,
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Yes, I Confirm!",
+          customClass: {
+            confirmButton: "btn bg-gradient-success",
+            cancelButton: "btn bg-gradient-danger",
+          },
+          buttonsStyling: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.proceedToCheckout();
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === this.$swal.DismissReason.cancel
+          ) {
+            this.$swal.dismiss;
+          }
+        });
+      }
+    },
+    askPTC() {
+      this.showSwal("warning-message-and-cancel");
+    },
+    async proceedToCheckout() {
+      this.$swal({
+        title: "Submit your Order",
+
+        showCancelButton: true,
+        confirmButtonText: "Send",
+        showLoaderOnConfirm: true,
+        customClass: {
+          confirmButton: "btn bg-gradient-success",
+          cancelButton: "btn bg-gradient-danger",
+        },
+        buttonsStyling: false,
+        preConfirm: () => {
+          let data = {
+            cart: JSON.stringify(this.cartItems),
+          };
+          return axios
+            .post("enquiry", data, this.axios_config)
+            .then(({ data }) => {
+              this.showSwal("success-message");
+              console.log(data.status);
+            })
+            .catch(({ response }) => {
+              this.errMessage = response.data.message;
+              /*this.$swal({
+            title: "Error!",
+            text: this.errMessage,
+            icon: "error",
+            customClass: {
+              confirmButton: "btn bg-gradient-success",
+            },
+            buttonsStyling: false,
+          });*/
+            });
+        },
+        allowOutsideClick: () => !this.$swal.isLoading(),
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$swal({
+            title: this.errMessage,
+          });
+        }
+      });
+    },
   },
 };
 </script>

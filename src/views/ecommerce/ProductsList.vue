@@ -340,6 +340,13 @@ export default {
       });*/
     }
   },
+  formatDate(dateString) {
+    const date = new Date(dateString);
+    // Then specify how you want your dates to be formatted
+    return new Intl.DateTimeFormat("default", { dateStyle: "long" }).format(
+      date
+    );
+  },
   submitFile() {
     alert("clicked");
     this.formData = new FormData();
@@ -362,7 +369,11 @@ export default {
       });
   },
   async created() {
-    await this.$store.dispatch("loadProducts");
+    //await this.$store.dispatch("loadProducts");
+    await this.$store.dispatch(
+      "loadVendorProducts",
+      this.$store.state.auth.user.id
+    );
   },
   computed: {
     products() {

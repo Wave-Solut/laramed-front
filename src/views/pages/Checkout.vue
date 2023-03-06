@@ -208,8 +208,8 @@ export default {
       if (type === "success-message") {
         this.$swal({
           icon: "success",
-          title: "Submit Enquiry!",
-          text: "Your Order has been submitted!",
+          title: "Product Added To Cart!",
+          text: "You can proceed to checkout!",
           type: type,
         });
       }

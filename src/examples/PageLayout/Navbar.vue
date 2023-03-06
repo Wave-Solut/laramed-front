@@ -62,7 +62,7 @@
             </a>
           </li>
 
-          <li class="mx-3 nav-item dropdown dropdown-hover">
+          <li v-show="!isAuth" class="mx-3 nav-item dropdown dropdown-hover">
             <a
               href="#"
               class="mb-1 btn bg-gradient-warning btn-xs"
@@ -115,15 +115,23 @@
               </li>
 
               <li class="text-center">
+                {{ this.cartCount }}
+                <p
+                  v-show="this.cartCount < 1"
+                  class="mb-0 text-xs text-secondary"
+                >
+                  Your Cart is Empty
+                </p>
+
                 <a
                   href="/dashboard/welcome"
                   class="mb-0 btn btn-sm me-1"
                   :class="btnBackground ? btnBackground : 'bg-white text-dark'"
                   onclick="smoothToPricing('pricing-soft-ui')"
-                  v-show="!isAuth"
+                  v-show="this.cartCount > 0"
                   @click.prevent="askPTC()"
-                  >Checkout</a
-                >
+                  >Checkout
+                </a>
               </li>
             </ul>
           </li>
@@ -783,9 +791,11 @@ export default {
       downArrBlack,
       isAuth: false,
       showMenu: false,
+      cartCount: 0,
       cartItems: [],
     };
   },
+
   computed: {
     darkModes() {
       return {
@@ -796,6 +806,7 @@ export default {
 
   created() {
     this.cartItems = this.$store.state.cart;
+    this.cartCount = this.$store.state.cartCount;
     let user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
       this.isAuth = true;
@@ -807,7 +818,7 @@ export default {
     },
 
     showSwal(type) {
-      if (type === "success-message") {
+      if (type === "success-message-enquiry") {
         this.$swal({
           icon: "success",
           title: "Submit Enquiry!",
@@ -832,7 +843,7 @@ export default {
             clearInterval(timerInterval);
           },
         });
-      } else if (type === "warning-message-and-cancel") {
+      } else if (type === "ask-proceed") {
         this.$swal({
           title: "Please verify your order details!",
           text: "By Choosing 'Yes', you accept the terms and conditions of ONE PHARMA!",
@@ -858,12 +869,11 @@ export default {
       }
     },
     askPTC() {
-      this.showSwal("warning-message-and-cancel");
+      this.showSwal("ask-proceed");
     },
     async proceedToCheckout() {
       this.$swal({
         title: "Submit your Order",
-
         showCancelButton: true,
         confirmButtonText: "Send",
         showLoaderOnConfirm: true,
@@ -879,20 +889,24 @@ export default {
           return axios
             .post("enquiry", data, this.axios_config)
             .then(({ data }) => {
-              this.showSwal("success-message");
+              this.showSwal("success-message-enquiry");
+              window.localStorage.setItem("cart", JSON.stringify([]));
+
+              window.localStorage.setItem("cartCount", 0);
+              this.cartCount = this.$store.state.cartCount;
               console.log(data.status);
             })
             .catch(({ response }) => {
               this.errMessage = response.data.message;
-              /*this.$swal({
-            title: "Error!",
-            text: this.errMessage,
-            icon: "error",
-            customClass: {
-              confirmButton: "btn bg-gradient-success",
-            },
-            buttonsStyling: false,
-          });*/
+              this.$swal({
+                title: "Error!",
+                text: this.errMessage,
+                icon: "error",
+                customClass: {
+                  confirmButton: "btn bg-gradient-success",
+                },
+                buttonsStyling: false,
+              });
             });
         },
         allowOutsideClick: () => !this.$swal.isLoading(),

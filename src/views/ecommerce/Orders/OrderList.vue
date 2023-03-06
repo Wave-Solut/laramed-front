@@ -71,8 +71,13 @@
                   <th>Id</th>
                   <th>Date</th>
                   <th>Status</th>
-                  <th>Payment</th>
-                  <th>Customer</th>
+                  <!--<th>Payment</th> -->
+                  <th v-show="this.$store.state.auth.user === 'admin'">
+                    Vendor
+                  </th>
+                  <th v-show="this.$store.state.auth.user === 'admin'">
+                    Customer
+                  </th>
                   <th>Product</th>
                   <th>Total</th>
                   <th>Action</th>
@@ -85,7 +90,7 @@
                 >
                   <td>
                     <div class="d-flex align-items-center">
-                      <argon-checkbox />
+                      <!-- <argon-checkbox />-->
                       <p class="text-xs font-weight-bold ms-2 mb-0">
                         #{{ enquiry.enquiryinfo.id }}
                       </p>
@@ -93,7 +98,7 @@
                   </td>
                   <td class="font-weight-bold">
                     <span class="my-2 text-xs">
-                      {{ enquiry.enquiryinfo.created_at }}</span
+                      {{ formatDate(enquiry.enquiryinfo.created_at) }}</span
                     >
                   </td>
                   <td class="text-xs font-weight-bold">
@@ -114,7 +119,7 @@
                       >
                     </div>
                   </td>
-                  <td class="text-xs font-weight-bold">
+                  <!-- <td class="text-xs font-weight-bold">
                     <div class="d-flex align-items-center">
                       <argon-button
                         :color="
@@ -148,8 +153,19 @@
                         enquiry.enquiryinfo.payment_status
                       }}</span>
                     </div>
+                  </td>-->
+                  <td
+                    v-show="this.$store.state.auth.user === 'admin'"
+                    class="text-xs font-weight-bold"
+                  >
+                    <div class="d-flex align-items-center">
+                      <span>{{ enquiry.vendor.full_name }}</span>
+                    </div>
                   </td>
-                  <td class="text-xs font-weight-bold">
+                  <td
+                    v-show="this.$store.state.auth.user === 'admin'"
+                    class="text-xs font-weight-bold"
+                  >
                     <div class="d-flex align-items-center">
                       <span>{{ enquiry.customer.full_name }}</span>
                     </div>
@@ -193,7 +209,7 @@
 <script>
 import { DataTable } from "simple-datatables";
 import ArgonButton from "@/components/ArgonButton.vue";
-import ArgonCheckbox from "@/components/ArgonCheckbox.vue";
+//import ArgonCheckbox from "@/components/ArgonCheckbox.vue";
 import img1 from "../../../assets/img/team-2.jpg";
 import img2 from "../../../assets/img/team-1.jpg";
 import img3 from "../../../assets/img/team-3.jpg";
@@ -205,7 +221,7 @@ export default {
   name: "OrderList",
   components: {
     ArgonButton,
-    ArgonCheckbox,
+    //ArgonCheckbox,
   },
   data() {
     return {
@@ -244,8 +260,18 @@ export default {
       });
     }
   },
+  methods: {
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      // Then specify how you want your dates to be formatted
+      return new Intl.DateTimeFormat("en-GB", {
+        dateStyle: "short",
+        timeStyle: "short",
+      }).format(date);
+    },
+  },
   async created() {
-    await this.$store.dispatch("loadEnquiries");
+    await this.$store.dispatch("loadEnquiries", this.$store.state.auth.user.id);
     this.uRole = this.$store.state.auth.user.role;
   },
   computed: {

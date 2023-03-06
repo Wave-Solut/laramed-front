@@ -10,7 +10,7 @@
                 <p class="text-sm mb-0">
                   Order no.
                   <b>{{ enquiryData.enquiryinfo.id }}</b> from
-                  <b>{{ enquiryData.enquiryinfo.created_at }}</b>
+                  <b>{{ formatDate(enquiryData.enquiryinfo.created_at) }}</b>
                 </p>
               </div>
 
@@ -75,21 +75,55 @@
                             class="card my-4"
                             v-for="message in chats"
                             :key="message.id"
+                            v-show="!(this.userRole == 'admin')"
                           >
                             <div class="card-header p-3 text-right">
                               <span class="text-xs me-2">
-                                [{{ message.created_at }}] :
+                                [{{ formatDate(message.created_at) }}] :
                               </span>
                               <span
                                 class="text-xs text-gray-900"
                                 v-show="message.from_user === current_user"
                               >
-                                {{ this.userRole }}
+                                You
                               </span>
                               <span
                                 class="text-xs"
                                 v-show="!(message.from_user === current_user)"
                                 ><small>Partner</small>
+                              </span>
+                              <span class="text-xs mx-3">
+                                {{ message.content }}
+                              </span>
+                            </div>
+                          </div>
+                          <div
+                            class="card my-4"
+                            v-for="message in chats"
+                            :key="message.id"
+                            v-show="this.userRole == 'admin'"
+                          >
+                            <div class="card-header p-3 text-right">
+                              <span class="text-xs me-2">
+                                [{{ formatDate(message.created_at) }}] :
+                              </span>
+                              <span
+                                class="text-xs text-gray-900"
+                                v-show="
+                                  message.from_user === enquiryData.customer.id
+                                "
+                              >
+                                Customer
+                              </span>
+                              <span
+                                class="text-xs"
+                                v-show="
+                                  !(
+                                    message.from_user ===
+                                    enquiryData.customer.id
+                                  )
+                                "
+                                ><small>Vendor</small>
                               </span>
                               <span class="text-xs mx-3">
                                 {{ message.content }}
@@ -238,6 +272,44 @@
                   </p>
                 </div>
               </div>
+              <div
+                v-show="
+                  this.$store.state.auth.user === 'admin' ||
+                  enquiryData.enquiryinfo.status === 'Delivred'
+                "
+                class="col-lg-12 col-md-12 col-12"
+              >
+                <h6 class="mb-3">Vendor Informations</h6>
+                <ul class="list-group">
+                  <li
+                    class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg"
+                  >
+                    <div class="d-flex flex-column">
+                      <h6 class="mb-3 text-sm">
+                        {{ enquiryData.vendor.full_name }}
+                      </h6>
+                      <span class="mb-2 text-xs">
+                        Company Name:
+                        <span class="text-dark font-weight-bold ms-2"
+                          >Viking Burrito</span
+                        >
+                      </span>
+                      <span class="mb-2 text-xs">
+                        Email Address:
+                        <span class="text-dark ms-2 font-weight-bold">{{
+                          enquiryData.vendor.email
+                        }}</span>
+                      </span>
+                      <span class="text-xs">
+                        VAT Number:
+                        <span class="text-dark ms-2 font-weight-bold"
+                          >FRB1235476</span
+                        >
+                      </span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
             <hr class="horizontal dark mt-4 mb-4" />
             <div class="row">
@@ -300,8 +372,12 @@
               </div>
               <hr class="horizontal dark mt-4 mb-4" />
               <div
+                v-show="
+                  (this.$store.state.auth.user === 'admin' ||
+                    enquiryData.enquiryinfo.status != 'Delivred') &&
+                  !(this.userRole === 'customer')
+                "
                 class="col-lg-5 col-12"
-                v-show="!(this.userRole === 'customer')"
               >
                 <div class="justify-content-left mb-2">
                   <label>Update Status</label>
@@ -325,7 +401,11 @@
               <div class="col-lg-5 col-12 ms-auto">
                 <div class="d-flex justify-content-end">
                   <button
-                    v-show="!(this.userRole === 'customer')"
+                    v-show="
+                      (this.$store.state.auth.user === 'admin' ||
+                        enquiryData.enquiryinfo.status != 'Delivred') &&
+                      !(this.userRole === 'customer')
+                    "
                     class="mb-0 btn bg-gradient-success btn-sm"
                     type="button"
                     name="button"
@@ -333,6 +413,39 @@
                   >
                     Save
                   </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              v-show="
+                this.$store.state.auth.user === 'admin' ||
+                enquiryData.enquiryinfo.status === 'Delivred'
+              "
+              class="card-footer mt-md-5 mt-4"
+            >
+              <div class="row">
+                <div class="col-lg-5 text-left">
+                  <h5>Thank you!</h5>
+                  <p class="text-secondary text-sm">
+                    If you encounter any issues related to the invoice you can
+                    contact us at:
+                  </p>
+                  <h6 class="text-secondary mb-0">
+                    email:
+                    <span class="text-dark">support@onepharma.fr</span>
+                  </h6>
+                </div>
+                <div class="col-lg-7 text-md-end mt-md-0 mt-3">
+                  <argon-button
+                    color="success"
+                    variant="gradient"
+                    class="mt-lg-7 mb-0"
+                    onclick="window.print()"
+                    type="button"
+                    name="button"
+                    >Print</argon-button
+                  >
                 </div>
               </div>
             </div>
@@ -346,10 +459,13 @@
 <script>
 import Choices from "choices.js";
 import axios from "axios";
+import ArgonButton from "@/components/ArgonButton.vue";
 
 export default {
   name: "EnquiryDetails",
-  components: {},
+  components: {
+    ArgonButton,
+  },
 
   data() {
     return {
@@ -409,6 +525,14 @@ export default {
           type: type,
         });
       }
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      // Then specify how you want your dates to be formatted
+      return new Intl.DateTimeFormat("en-GB", {
+        dateStyle: "short",
+        timeStyle: "short",
+      }).format(date);
     },
     getChoices(id) {
       if (document.getElementById(id)) {

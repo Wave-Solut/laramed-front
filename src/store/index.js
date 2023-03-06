@@ -12,7 +12,7 @@ const vuexLocal = new VuexPersistence({
 });
 
 let cart = window.localStorage.getItem("cart");
-let cartCount = window.localStorage.getItem("cartCount");
+//let cartCount = window.localStorage.getItem("cartCount");
 
 export default createStore({
   state: {
@@ -49,7 +49,8 @@ export default createStore({
     users: [],
     user: [],
     cart: cart ? JSON.parse(cart) : [],
-    cartCount: cartCount ? parseInt(cartCount) : 0,
+    //cartCount: cartCount ? parseInt(cartCount) : 0,
+    cartCount: 0,
   },
   mutations: {
     toggleConfigurator(state) {
@@ -185,8 +186,8 @@ export default createStore({
       let index = state.cart.indexOf(item);
 
       if (index > -1) {
-        let product = state.cart[index];
-        state.cartCount -= product.quantity;
+        //let product = state.cart[index];
+        state.cartCount -= state.cartCount;
 
         state.cart.splice(index, 1);
       }
@@ -209,6 +210,11 @@ export default createStore({
       commit("REMOVE_FROM_CART", item);
       commit("SAVE_CART");
     },
+    emptyCart({ commit }) {
+      this.state.cart = [];
+      this.state.cartCount = 0;
+      commit("SAVE_CART");
+    },
     async loadProducts({ commit }) {
       await axios
         .get("/products")
@@ -219,7 +225,16 @@ export default createStore({
           throw new Error(`API ${error}`);
         });
     },
-
+    async loadVendorProducts({ commit }, userId) {
+      await axios
+        .get("/products/" + userId)
+        .then((result) => {
+          commit("SAVE_PRODUCTS", result.data);
+        })
+        .catch((error) => {
+          throw new Error(`API ${error}`);
+        });
+    },
     async createProduct(productData) {
       try {
         await axios.post("/product/", {
@@ -405,9 +420,9 @@ export default createStore({
           throw new Error(`API ${error}`);
         });
     },
-    async loadEnquiries({ commit }) {
+    async loadEnquiries({ commit }, idUser) {
       return await axios
-        .get("/enquiries")
+        .get("/enquiries/" + idUser)
         .then((result) => {
           commit("SAVE_ENQUIRIES", result.data);
         })

@@ -102,8 +102,8 @@
   >
     {{ errMessage }}
   </span>
-  <b>{{ productInfoEnquiry }}</b>
-  <b>{{ pfInfo }}</b>
+  <!--<b>{{ productInfoEnquiry }}</b>
+  <b>{{ pfInfo }}</b>-->
 
   <app-footer />
 </template>

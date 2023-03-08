@@ -14,7 +14,7 @@
     <div
       class="page-header position-relative"
       style="
-        background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-basic.jpg');
+        background-image: url('https://m.economictimes.com/thumb/msid-89810762,width-1200,height-900,resizemode-4,imgsize-50206/1.jpg');
       "
     >
       <span class="mask bg-gradient-dark opacity-6"></span>
@@ -59,7 +59,13 @@
         </div>
       </div>
     </div>
+    <Features />
+    <About />
+    <Team />
+    <Services />
+    <Contact />
   </main>
+
   <app-footer />
 </template>
 
@@ -67,6 +73,11 @@
 import Navbar from "@/examples/PageLayout/Navbar.vue";
 import AppFooter from "@/examples/PageLayout/Footer.vue";
 import setNavPills from "@/assets/js/nav-pills.js";
+/*import About from "@/examples/Front/About.vue";
+import Contact from "@/examples/Front/Contact.vue";
+import Features from "@/examples/Front/Features.vue";
+import Services from "@/examples/Front/Services.vue";
+import Team from "@/examples/Front/Team.vue";*/
 
 import { mapMutations } from "vuex";
 
@@ -75,6 +86,11 @@ export default {
   components: {
     Navbar,
     AppFooter,
+    // About,
+    //Contact,
+    //Features,
+    //Services,
+    //Team,
   },
   data() {
     return {};

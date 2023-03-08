@@ -14,7 +14,7 @@
     <div
       class="page-header position-relative"
       style="
-        background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-basic.jpg');
+        background-image: url('https://images.livemint.com/img/2023/01/07/1600x900/medicines-keVH--621x414_1673105129319_1673105129531_1673105129531.jpg');
       "
     >
       <span class="mask bg-gradient-dark opacity-6"></span>
@@ -79,7 +79,7 @@
         </div>
       </div>
     </div>
-    <div class="container">
+    <div v-show="showFilters" class="container">
       <div class="row">
         <div class="col-lg-4 mt-4">
           <div class="card">
@@ -344,6 +344,7 @@ export default {
       Countries: [],
       categorySelected: null,
       idc: null,
+      showFilters: false,
       urlHasSetting: false,
       valc: null,
       selectedValuesAtc: {
@@ -359,6 +360,7 @@ export default {
   },
   watch: {
     keyword() {
+      this.showFilters = true;
       this.getResults();
     },
     selectedValuesAtc() {
@@ -418,12 +420,22 @@ export default {
     },
 
     selectedCategory: function (idc, valc) {
+      this.showFilters = true;
       this.categorySelected = valc;
       this.idc = idc;
 
       axios
         .get("/product/searchcategory", { params: { category: idc } })
-        .then((res) => (this.Products = res.data))
+        .then((res) => {
+          if (res.data) {
+            //alert("data  there");
+
+            this.Products = res.data;
+          } else {
+            //alert("data empty");
+            this.Products = [];
+          }
+        })
         .catch((error) => {
           console.log(error);
         });
@@ -439,7 +451,16 @@ export default {
             svc: this.selectedValuesCountry.svc,
           },
         })
-        .then((res) => (this.Products = res.data))
+        .then((res) => {
+          if (res.data) {
+            //alert("data  there");
+
+            this.Products = res.data;
+          } else {
+            //alert("data empty");
+            this.Products = [];
+          }
+        })
         .catch((error) => {
           console.log(error);
         });
